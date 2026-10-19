@@ -62,7 +62,7 @@ Start with one coherent `SKILL.md` and add components only when the work needs t
 - `scripts/`: deterministic transformations, repeated calculations, or fragile tools. A script should have clear inputs and outputs and be verified on representative safe cases.
 - `assets/`: templates, design examples, input/output materials, and other resources needed to produce results.
 - Routing: establish it only when inputs genuinely select different knowledge or tools. Provide a default path and make ambiguous cases recoverable.
-- Subagents, hooks, execution isolation, special frontmatter: use only when the target host actually supports them and the benefit can be measured. Do not assume that Claude, Codex, DSH, or another runtime shares the same mechanisms.
+- Subagents, hooks, execution isolation, special frontmatter: use only when the target host actually supports them and the benefit can be measured. Do not assume that one runtime shares another runtime's mechanisms.
 
 Complex skills may use shallow subdirectories under `references/` to make files easier to find. Do not build deep chains that hide essential guidance. A correct relative path does not prove that the host can discover the reference. Check loading behavior in the real host.
 

@@ -38,7 +38,7 @@ Clone the repository:
 git clone https://github.com/FengZhiHen1/luo-meta-skill.git
 ~~~
 
-Place the directory in your host's skills directory under the name `luo-meta-skill`, or import it with your skill manager. The exact path depends on the host. The skill uses only `SKILL.md` and Markdown references.
+Place the directory in the location your host uses for skill discovery, using the name `luo-meta-skill`. The exact path depends on the host. The skill uses only `SKILL.md` and Markdown references.
 
 ### Verify
 

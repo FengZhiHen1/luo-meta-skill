@@ -40,7 +40,7 @@ Luo Meta Skill 是一套处理这些决策的方法。它帮助 agent 判断是�
 git clone https://github.com/FengZhiHen1/luo-meta-skill.git
 ~~~
 
-把目录放到 host 的 skills 目录下，目录名保持 `luo-meta-skill`；或用 skill manager 导入。具体路径取决于 host。本 skill 只使用 `SKILL.md` 和 Markdown 引用。
+把目录放到 host 用于发现 skill 的位置，目录名保持 `luo-meta-skill`。具体路径取决于 host。本 skill 只使用 `SKILL.md` 和 Markdown 引用。
 
 ### 验证
 
