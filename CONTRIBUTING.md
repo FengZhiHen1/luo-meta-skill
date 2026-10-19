@@ -25,7 +25,7 @@ There is no build step. Edit the Markdown files and check:
 
 ## Commit and pull request
 
-- Use Conventional Commits, for example `docs: clarify trigger boundary`.
+- Use Conventional Commits, for example `docs: clarify trigger boundary`. PR titles follow the same format; the repository uses squash merge, so the PR title becomes the commit title.
 - Describe the problem, the change, the verification, and the remaining risk.
 - Link related issues with `Closes #123`.
 - Disclose substantial AI assistance in the pull request description.

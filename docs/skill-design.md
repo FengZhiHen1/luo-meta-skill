@@ -52,7 +52,7 @@ This is an independent synthesis of methods. It does not copy protected upstream
 
 ## Relationship to the legacy implementation
 
-The legacy implementation was a branch of yao-meta-skill with scripts, evaluation, governance, and an evidence system. It is preserved read-only outside the active skill set; use Git history to recover specific implementation details. The new version does not inherit its directory structure or process.
+An earlier implementation was a branch of yao-meta-skill with scripts, evaluation, governance, and an evidence system. It is not part of this repository. The public version does not inherit its directory structure or process.
 
 ## Maintenance rules
 
