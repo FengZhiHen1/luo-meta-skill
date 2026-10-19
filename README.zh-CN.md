@@ -112,6 +112,10 @@ Luo Meta Skill 面向实现了 [Agent Skills 规范](https://agentskills.io/spec
 - 不包含 CLI、评测平台或治理系统。
 - 运行时指令为英文；目标 skill 可以使用任意语言。
 
+## 安全
+
+安全问题不要通过公开 Issue 报告，请按 [SECURITY.md](SECURITY.md) 处理。
+
 ## 贡献
 
 欢迎用英文或中文提交 Issue 和 PR。较大的改动先读 [CONTRIBUTING.md](CONTRIBUTING.md)。

@@ -110,6 +110,10 @@ It uses no scripts, hooks, subagents, provider-specific frontmatter, or network 
 - No CLI, evaluation platform, or governance system is included.
 - Runtime guidance is in English. Target skills may be written in any language.
 
+## Security
+
+Do not report security problems in public issues. Follow [SECURITY.md](SECURITY.md).
+
 ## Contributing
 
 Issues and pull requests are welcome in English or Chinese. Read [CONTRIBUTING.md](CONTRIBUTING.md) before a substantial change.
