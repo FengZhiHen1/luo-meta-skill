@@ -50,6 +50,7 @@ A small fix may need no reference. Combine references when the work genuinely sp
 - Convert high-value findings into what the agent will decide, do, or verify differently: decision cues, concrete steps, precise facts, contrasting examples, reusable mechanisms. Preserve conditions, trade-offs, and exceptions.
 - Maintain goals, scope, expected behavior, boundaries, implementation choices, and acceptance methods in the target skill project's `docs/`. Scale detail to complexity. Do not require `SPEC.md`, fixed sections, hash synchronization, or evidence dossiers.
 - Keep runtime content to what execution needs: `SKILL.md` for the main path and reference routing; `references/` for task-time knowledge; `scripts/` for deterministic, repeated, or fragile operations; `assets/` for templates and materials.
+- Add `schemas/` only when structured artifacts are consumed by code, tests, or a validator; keep one authoritative schema and derive code and tests from it. Do not create an empty schema directory.
 - `docs/` is not runtime context by default. Do not put maintenance rationale, source arguments, or iteration records into `SKILL.md`.
 - Use relative paths only, pointing to files inside this skill. Do not reference absolute paths, other repositories, or local machine locations.
 - Use subagents, hooks, special frontmatter, or platform-specific mechanisms only when the target harness (the agent runtime that loads the skill) actually supports them. Verify in the harness before writing them into the skill.

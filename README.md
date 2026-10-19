@@ -92,6 +92,7 @@ Runtime files: `SKILL.md` and `references/`. `docs/` records design intent and s
 
 - **Description is a routing contract.** The harness reads the name and description before the body; trigger conditions belong there.
 - **Capability over documentation volume.** A skill should change what the agent decides or does, not add files.
+- **Schemas only when consumed.** A produced skill with structured artifacts gets one authoritative schema (for example, `schemas/`) only when code, tests, or a validator consume it; derive code and tests from it.
 - **Shapes are starting points.** Procedure, knowledge, tool, judgment, and creative shapes; adapt them to the task.
 - **Research with two anchors.** Representative tasks and capability gaps, plus systematic domain knowledge.
 - **Verification proportional to risk.** Text checks for wording, artifacts for behavior, trigger cases for routing.

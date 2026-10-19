@@ -25,6 +25,7 @@ Help an agent create, refactor, and improve reusable Agent Skills, with emphasis
 - Knowledge freshness and organization: keep durable guidance in the skill, refresh volatile facts, and organize runtime references by task rather than by source. The main path may rely on references when the entry point routes the agent to them before use.
 - Proportionate verification: choose checks by the changed behavior, risk, and uncertainty. Trigger checks apply to trigger changes; artifact, loading, execution, and contract checks apply to their respective changes. Distinguish designed test cases from observed failure evidence.
 - Harness neutrality: a harness is the agent runtime that discovers, loads, and runs skills. Verify platform mechanisms before relying on them; never assume availability from a file name.
+- Structured artifacts get one schema: keep field names, types, and value domains in one machine-readable schema (for example, `schemas/`) only when code, tests, or a validator consume it; derive code and tests from it.
 
 ## File organization
 
@@ -60,6 +61,7 @@ An earlier implementation was a branch of yao-meta-skill with scripts, evaluatio
 - A wording-only change does not require a new snapshot, version file, or duplicate document.
 - When a real task exposes a design problem, fix the runtime guidance first and then update the rationale here.
 - Keep iteration records, evaluation output, and one-off research out of the distributed skill.
+- Keep the distributed skill self-contained. Do not reference the author's repository layout, local instruction files, or workspaces from runtime content; local conventions may inform the implementation, but the skill must carry the rules it needs.
 - Keep this skill's own `description` and runtime guidance in English. It is an international open-source product; do not localize its metadata to the author's local language.
 
 ## Validation plan

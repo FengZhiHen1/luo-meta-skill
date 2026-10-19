@@ -61,6 +61,7 @@ Start with one coherent `SKILL.md` and add components only when the work needs t
 - `references/`: substantial domain knowledge needed only in some task variants. State when to read each file and when not to.
 - `scripts/`: deterministic transformations, repeated calculations, or fragile tools. A script should have clear inputs and outputs and be verified on representative safe cases.
 - `assets/`: templates, design examples, input/output materials, and other resources needed to produce results.
+- `schemas/`: optional machine-readable contracts for structured artifacts (JSON Schema, SQL DDL, or equivalent), only when code, tests, or a validator consume them. Keep one authoritative definition and derive code and tests from it; do not duplicate field rules in prose.
 - Routing: establish it only when inputs genuinely select different knowledge or tools. Provide a default path and make ambiguous cases recoverable.
 - Subagents, hooks, execution isolation, special frontmatter: use only when the target harness actually supports them and the benefit can be measured. Do not assume that one harness shares another harness's mechanisms.
 
@@ -101,7 +102,7 @@ Do not assume that other harnesses support a mechanism because one harness does.
 - Follow the target project's directory layout, naming, packaging, and distribution rules.
 - Do not assume that this skill's own repository layout or tooling applies elsewhere.
 - Keep runtime references relative and inside the skill. Do not point to absolute paths, other repositories, or local machine locations.
-- Keep field names, types, and value domains for structured artifacts in one authoritative schema, and derive code from it.
+- Keep field names, types, and value domains for structured artifacts in one authoritative schema (for example, `schemas/`), and derive code and tests from it.
 - Keep iteration records, evaluation output, and one-off research out of the distributed runtime surface.
 - Remove or archive retired implementations instead of leaving them active.
 
