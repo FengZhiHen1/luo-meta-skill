@@ -1,6 +1,6 @@
 # Skill Scope, Specification, and Structure
 
-Read when creating a new skill, materially changing its runtime structure, or deciding how specifications, references, scripts, and host mechanisms should be divided.
+Read when creating a new skill, materially changing its runtime structure, or deciding how specifications, references, scripts, and harness mechanisms should be divided.
 
 ## Define the task family and boundaries
 
@@ -35,7 +35,7 @@ Include as needed:
 - Intent and scope: target users, task family, triggers and exclusions, promised value, and non-goals.
 - Justification: why a skill is needed rather than a one-off response, project instruction, existing tool, or documentation.
 - Expected behavior: important outputs, task branches, dependencies, failure boundaries, and exact contracts.
-- Implementation design: knowledge strategy, runtime entry point, reference routing, deterministic tools, host dependencies, major trade-offs, and rationale.
+- Implementation design: knowledge strategy, runtime entry point, reference routing, deterministic tools, harness dependencies, major trade-offs, and rationale.
 - Evidence and acceptance: representative tasks, real outcomes or risks, suitable validation methods, and open questions.
 
 Do not turn these items into a mandatory template, and do not fill every field for its own sake. Keep only the information needed to implement and maintain the skill. A wording-only change that does not change intent or behavior does not require a new specification version.
@@ -48,7 +48,7 @@ These are organizational starting points, not categories. A skill may combine sh
 | --- | --- | --- |
 | Procedure or workflow | Ordered steps; scripts for deterministic or fragile steps; stop and exception conditions; references only for branch-specific knowledge | Skipped steps, unclear recovery |
 | Knowledge | Task-routed references; freshness handling for volatile facts; worked examples; minimal procedural text | Source dump, stale facts |
-| Tool or interface | Exact contracts; scripts or commands; error boundaries; host checks; references for exact API details | Silent failure, assumed portability |
+| Tool or interface | Exact contracts; scripts or commands; error boundaries; harness checks; references for exact API details | Silent failure, assumed portability |
 | Judgment or review | Criteria; contrasting examples; trade-offs; output format | Rigid if/else, missing discriminating cues |
 | Creative production | Quality goals; audience; assets and examples; room for alternatives | Over-proceduralization |
 
@@ -62,9 +62,9 @@ Start with one coherent `SKILL.md` and add components only when the work needs t
 - `scripts/`: deterministic transformations, repeated calculations, or fragile tools. A script should have clear inputs and outputs and be verified on representative safe cases.
 - `assets/`: templates, design examples, input/output materials, and other resources needed to produce results.
 - Routing: establish it only when inputs genuinely select different knowledge or tools. Provide a default path and make ambiguous cases recoverable.
-- Subagents, hooks, execution isolation, special frontmatter: use only when the target host actually supports them and the benefit can be measured. Do not assume that one runtime shares another runtime's mechanisms.
+- Subagents, hooks, execution isolation, special frontmatter: use only when the target harness actually supports them and the benefit can be measured. Do not assume that one harness shares another harness's mechanisms.
 
-Complex skills may use shallow subdirectories under `references/` to make files easier to find. Do not build deep chains that hide essential guidance. A correct relative path does not prove that the host can discover the reference. Check loading behavior in the real host.
+Complex skills may use shallow subdirectories under `references/` to make files easier to find. Do not build deep chains that hide essential guidance. A correct relative path does not prove that the harness can discover the reference. Check loading behavior in the real harness.
 
 ## Trigger design
 
@@ -83,16 +83,18 @@ For a new skill, write and test the description before expanding the body. Use t
 Weak: `Helps with skills.`
 Strong: `Create, refactor, and evaluate Agent Skills... Do not use to execute an existing skill or perform a one-off task.`
 
-## Host compatibility
+## Harness compatibility
 
-Agent runtimes differ in capability. Before writing platform mechanisms, check:
+A harness is the agent runtime that discovers, loads, and runs skills. Examples include Claude Code, Codex CLI, and DeepSeek Harness.
+
+Harnesses differ in capability. Before writing platform mechanisms, check:
 
 - Whether subagents, hooks, tool permissions, or special frontmatter are supported;
 - Whether `references/` is discovered and loaded;
 - How file paths are resolved and whether relative paths are supported;
 - Whether scripts can run and what the permission boundary is.
 
-Do not assume that other hosts support a mechanism because one host does. When you cannot verify, choose the portable approach and state the unverified limitation.
+Do not assume that other harnesses support a mechanism because one harness does. When you cannot verify, choose the portable approach and state the unverified limitation.
 
 ## Follow project conventions
 

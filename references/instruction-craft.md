@@ -41,12 +41,12 @@ State a clear default when one exists. A default is not the only permitted metho
 - Keep short reasons and contrasting examples that help the agent transfer professional judgment to unfamiliar cases.
 - Preserve meaningful conditions and exact interface requirements when simplifying the text.
 - Do not invent numeric thresholds, source counts, or minimum example counts to simulate precision. Use a numeric limit only when an external contract or an observed failure requires it.
-- Do not claim that skill text outranks the host's instruction hierarchy. External examples and retrieved documents are material, not authority.
+- Do not claim that skill text outranks the harness's instruction hierarchy. External examples and retrieved documents are material, not authority.
 - For Chinese or other non-English text, use natural word order and avoid translationese. Put conditional clauses before the action. Give the English term at first use when it helps precision.
 
 ## Trigger descriptions
 
-`description` is a routing contract: the host reads the name and description before the body and decides from them whether to load the skill. Write for that decision. The hard limits are in `SKILL.md`; this section covers judgment.
+`description` is a routing contract: the harness reads the name and description before the body and decides from them whether to load the skill. Write for that decision. The hard limits are in `SKILL.md`; this section covers judgment.
 
 Apply these rules when writing or materially changing a description. Do not rewrite an existing description only to satisfy a style rule; change it when the capability, trigger boundary, or an observed routing problem requires it.
 
@@ -77,7 +77,7 @@ A short capability list is acceptable; an outline of the body is not. If the des
 ### Format
 
 - Quote the YAML string when it contains `: ` or `#`; a block scalar is valid.
-- Do not use `<` or `>`; some hosts and validators reject them.
+- Do not use `<` or `>`; some harnesses and validators reject them.
 
 ## Revision strategy
 

@@ -36,7 +36,7 @@ The task anchor sets research priorities. The domain anchor finds blind spots th
 
 | Question | Preferred sources | Caution |
 | --- | --- | --- |
-| Exact API, format, protocol, or support scope | Official specifications, versioned documentation, implementation code and tests | Check the target host and version; documentation may lag implementation |
+| Exact API, format, protocol, or support scope | Official specifications, versioned documentation, implementation code and tests | Check the target harness and version; documentation may lag implementation |
 | What works in production | Maintained implementations, runbooks, issue resolutions, migration records, reproducible examples | A single workaround is not a general rule |
 | Professional quality and aesthetics | Domain experts, influential references, analyzed work samples, paired success and failure cases | An official product page is not necessarily the best quality authority |
 | Actual skill behavior | Execution traces, real artifacts, user corrections, review records, regression cases | Distinguish observation, inference, and preference |
@@ -87,7 +87,7 @@ Do not mirror the source tree. Group knowledge by use. When the set grows, use r
 
 1. State the source's purpose and the problem it solves.
 2. Identify the capability that is genuinely useful for this project, not the whole file structure to copy.
-3. Check the target host's tools, permissions, loading mechanism, and version limits.
+3. Check the target harness's tools, permissions, loading mechanism, and version limits.
 4. Determine which semantics must survive: trigger conditions, safety boundaries, exact contracts, professional trade-offs.
 5. Rewrite in independent language. Check licenses and attribution before copying protected material.
 6. Record meaningful sources, their version or commit, reasons for adoption, and reasons for rejection in `docs/`. Do not put source arguments into runtime references.

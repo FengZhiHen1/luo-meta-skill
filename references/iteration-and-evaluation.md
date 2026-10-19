@@ -8,8 +8,8 @@ Collect as much as possible: the original request, available inputs, the skill a
 
 | Observation | Check first |
 | --- | --- |
-| Skill not triggered, or triggered for an unrelated task | `description`, nearby competing skills, host trigger mechanism |
-| Important reference not read | Routing condition, path correctness, file discovery, host loading mechanism |
+| Skill not triggered, or triggered for an unrelated task | `description`, nearby competing skills, harness trigger mechanism |
+| Important reference not read | Routing condition, path correctness, file discovery, harness loading mechanism |
 | Model followed instructions but output is still weak | Missing domain knowledge, weak decision criteria, insufficient examples or tools |
 | Output violates a format or API contract | Incorrect technical detail, ambiguous instruction, missing deterministic check |
 | Unnecessary operations performed | Trigger too broad, mandatory research or evaluation wording, unclear default or stopping condition |
@@ -37,7 +37,7 @@ Collect real positive and negative cases:
 - Neighboring skills with overlapping terminology;
 - The languages and shorthand that users actually use.
 
-Test actual trigger behavior in the target host. Do not infer all hosts from one host's result, and do not overfit to synthetic phrases. After changing triggers, check both missed triggers and false triggers.
+Test actual trigger behavior in the target harness. Do not infer all harnesses from one harness's result, and do not overfit to synthetic phrases. After changing triggers, check both missed triggers and false triggers.
 
 Also check description/body consistency: every capability named in the description must exist in the skill, and every capability removed from the skill must leave the description. A description that promises a capability the skill does not deliver causes the agent to load the wrong skill or improvise.
 
@@ -78,4 +78,4 @@ State exactly what was done:
 - Before/after comparison or a no-skill control;
 - User acceptance.
 
-Also state untested hosts, quality dimensions, and known gaps. Without a real comparison, do not claim a measured skill gain.
+Also state untested harnesses, quality dimensions, and known gaps. Without a real comparison, do not claim a measured skill gain.

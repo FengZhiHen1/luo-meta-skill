@@ -21,7 +21,7 @@ There is no build step. Edit the Markdown files and check:
 - Runtime guidance stays in English.
 - `SKILL.md` keeps its frontmatter and the reference routing table.
 - If behavior or installation changes, update both README files.
-- If a description changes, test positive, negative, and neighboring cases in a real host before claiming an improvement.
+- If a description changes, test positive, negative, and neighboring cases in a real harness before claiming an improvement.
 
 ## Commit and pull request
 
