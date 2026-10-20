@@ -30,9 +30,9 @@ Help an agent create, refactor, and improve reusable Agent Skills, with emphasis
 
 ## File organization
 
-- `SKILL.md`: task triage, skill-worthiness decision, reference routing, core design principles, verification and delivery.
+- `SKILL.md`: task triage, skill-worthiness decision, reference routing, core design principles, verification and delivery, stop and hand-back conditions.
 - `references/research-and-synthesis.md`: two-anchor research, source evaluation, knowledge conversion, external skill adaptation.
-- `references/skill-architecture.md`: scope and boundaries, specification documents, runtime structure, trigger boundary and case design, harness compatibility.
+- `references/skill-architecture.md`: scope and boundaries, `SKILL.md` body shape, specification documents, runtime structure, trigger boundary and case design, harness compatibility.
 - `references/instruction-craft.md`: semantics first, constraint strength, technical writing rules, trigger descriptions, revision strategy, precision check.
 - `references/reference-routing.md`: routing contract, formats, anti-patterns, routing tests.
 - `references/iteration-and-evaluation.md`: failure diagnosis, proportionate evaluation, trigger and output checks, honest reporting.

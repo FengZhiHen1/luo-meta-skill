@@ -19,7 +19,7 @@ Luo Meta Skill is a method for those decisions. It helps an agent decide whether
 
 - **Decide whether a skill is warranted.** Distinguishes a reusable skill from a one-off task, a repository convention, or a deterministic check.
 - **Research before writing.** Uses two anchors: representative tasks and capability gaps, plus systematic domain knowledge.
-- **Design the runtime.** Covers scope, reference routing with read-when and skip-when, scripts and assets, harness compatibility, and the main path.
+- **Design the runtime.** Covers scope, `SKILL.md` body shape, reference routing with read-when and skip-when, scripts and assets, harness compatibility, and the main path.
 - **Write precise instructions.** Settles semantics first, matches constraint strength to behavior fragility, and treats the `description` as a routing contract.
 - **Verify proportionately.** Uses trigger cases, real artifacts, before/after comparison, and honest reporting of what was not tested.
 

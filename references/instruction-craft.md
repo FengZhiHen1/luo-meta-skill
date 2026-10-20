@@ -94,6 +94,7 @@ Before delivery, check each item:
 
 - Does every rule point to an observable behavior or result?
 - Is the default path clear?
+- Can a new reader answer the five questions in [skill-architecture.md](skill-architecture.md): purpose and default outcome, main path, reference routing, boundaries and failure handling, and completion check?
 - Are important conditions, exceptions, and stopping points missing?
 - Do conflicting old rules remain?
 - Are key identifiers, paths, and formats exact?

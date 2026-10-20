@@ -35,13 +35,13 @@ A skill should cover one coherent task family. Avoid one-sentence micro-skills a
 
 Read a reference only when the work requires it. Do not load all references by default.
 
-| Work | Reference |
-| --- | --- |
-| Research domain knowledge, absorb an external skill, convert sources into runtime capability | [research-and-synthesis.md](references/research-and-synthesis.md) |
-| Define scope, write specifications and design documents, choose runtime structure, design triggers | [skill-architecture.md](references/skill-architecture.md) |
-| Write or modify `SKILL.md`, `description`, and rules | [instruction-craft.md](references/instruction-craft.md) |
-| Design or review reference routing | [reference-routing.md](references/reference-routing.md) |
-| Diagnose failures, evaluate triggers or outputs, compare revisions | [iteration-and-evaluation.md](references/iteration-and-evaluation.md) |
+| Read when | Reference | Skip when |
+| --- | --- | --- |
+| Researching domain knowledge, absorbing an external skill, or converting sources into runtime capability | [research-and-synthesis.md](references/research-and-synthesis.md) | A wording or path fix with no new knowledge |
+| Defining scope, shaping `SKILL.md`, writing specifications, choosing runtime structure, or designing triggers | [skill-architecture.md](references/skill-architecture.md) | A one-line description edit with no structural change |
+| Writing or modifying `SKILL.md`, `description`, or operating rules | [instruction-craft.md](references/instruction-craft.md) | A pure path or link fix |
+| Designing or reviewing reference routing | [reference-routing.md](references/reference-routing.md) | The task does not touch routing |
+| Diagnosing failures, evaluating triggers or outputs, or comparing revisions | [iteration-and-evaluation.md](references/iteration-and-evaluation.md) | A new design with no observed failure |
 
 A small fix may need no reference. Combine references when the work genuinely spans their concerns.
 
@@ -92,3 +92,11 @@ See [instruction-craft.md](references/instruction-craft.md) for examples and bou
 - Distinguish three states: structure checked, design reviewed, runtime behavior tested. Do not report a test that was not run as passed.
 - When behavior or design changes, update the affected `docs/`. A wording-only change does not require a new snapshot or a second authoritative explanation.
 - Deliver usable files and a concise explanation: major design choices, verification actually performed, and remaining material limitations. Unless the user asks, do not produce scorecards, evidence reports, or governance checklists.
+
+## Stop and hand back
+
+- Stop when the request is not a skill task; use the direct task, repository convention, or deterministic check instead.
+- Stop when required inputs, target files, or permissions are missing and the user must supply them.
+- Stop when the target harness does not support a mechanism the design depends on; do not write an unverified workaround.
+- Stop when verification cannot be run and the remaining risk needs a user decision; state what is untested.
+- When handing back, state what is done, what is untested, and the smallest next action.

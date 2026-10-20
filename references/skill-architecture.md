@@ -54,6 +54,55 @@ These are organizational starting points, not categories. A skill may combine sh
 
 Routing is a mechanism available to any shape. A standalone routing skill also needs a default path, a fallback, and tests for neighboring requests.
 
+## SKILL.md shape
+
+The Agent Skills specification requires frontmatter and leaves the body format open. Define the body by the questions it must answer, not by a fixed set of headings.
+
+| Question | Required content | Avoid |
+| --- | --- | --- |
+| What does it do, and what is the default outcome? | One or two sentences: task family, default output, scope. | A duplicate of the description, a workflow summary, or background. |
+| What is the default path? | Ordered steps or a decision flow; the default when several paths exist; conditions next to the action they govern. | Principles without actions, every branch expanded, design rationale. |
+| What should I read, and when? | One routing block with a default, a read-when, and a skip-when when over-reading is a risk. See [reference-routing.md](reference-routing.md). | A file index, "read as needed", nested knowledge references. |
+| When do I stop, fail, or hand back? | Execution boundaries; failure, stop, and hand-back conditions; permission and safety boundaries; recovery. | Trigger exclusions, "handle errors appropriately", no stopping condition. |
+| How do I know the task is complete? | A completion check, the output contract when fixed, and the evidence required. | "Verify as appropriate", a scorecard instead of a completion condition. |
+
+The questions are required; the headings are not. Use the smallest structure that makes each answer findable.
+
+A default skeleton:
+
+```markdown
+# <Title>
+<One or two sentences: job, default outcome, scope.>
+
+## Main path
+<Default steps or decision flow. State the default when several paths exist.>
+
+## Reference routing
+<Default: no reference. Read X when ...; skip when ...>
+
+## Boundaries and failure handling
+<Execution scope. Stop, fail, ask, or hand back when ...; recover by ...>
+
+## Completion check
+<How to know the task is done; output contract; evidence.>
+```
+
+Add only the optional blocks that change a decision, action, or verification:
+
+- a decision table or selection guide when the main path branches;
+- gotchas or common mistakes for known, repeated failures;
+- a quick reference for scanning, not as a substitute for the main path;
+- input/output examples or contrasting examples;
+- an output template; put large templates in `assets/`;
+- an operating contract for complex or tool skills: primary output, tools, failure tolerance;
+- assets or scripts usage.
+
+Match the blocks to the shape in [Choose a starting shape](#choose-a-starting-shape). A procedure needs checkpoints and stop conditions; a knowledge skill needs selection criteria and freshness; a tool skill needs exact contracts and error boundaries; a judgment skill needs criteria, cues, and trade-offs; a creative skill needs goals, audience, constraints, and room for alternatives.
+
+Do not put status, history, version, changelog, ownership, design rationale, source arguments, or iteration records in `SKILL.md`; keep them in `docs/` or repository metadata. Do not add a "When to use" section; the description owns the trigger. Do not add README, CHANGELOG, or QUICK_REFERENCE files as runtime files inside a skill; repository metadata is separate. Do not write unverified harness mechanisms, absolute paths, other repositories, or local machine locations.
+
+Keep the body under the specification's guideline of about 500 lines and 5,000 tokens. If it grows, remove duplicated reference material, rationale, and edge cases the agent can handle; split a genuine branch into a reference rather than cutting the main path. The body carries the main path; references carry task-time detail; `docs/` carries design intent.
+
 ## Runtime structure
 
 Start with one coherent `SKILL.md` and add components only when the work needs them:
