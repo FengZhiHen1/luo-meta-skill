@@ -19,7 +19,7 @@ Luo Meta Skill is a method for those decisions. It helps an agent decide whether
 
 - **Decide whether a skill is warranted.** Distinguishes a reusable skill from a one-off task, a repository convention, or a deterministic check.
 - **Research before writing.** Uses two anchors: representative tasks and capability gaps, plus systematic domain knowledge.
-- **Design the runtime.** Covers scope, reference routing, scripts and assets, harness compatibility, and the main path.
+- **Design the runtime.** Covers scope, reference routing with read-when and skip-when, scripts and assets, harness compatibility, and the main path.
 - **Write precise instructions.** Settles semantics first, matches constraint strength to behavior fragility, and treats the `description` as a routing contract.
 - **Verify proportionately.** Uses trigger cases, real artifacts, before/after comparison, and honest reporting of what was not tested.
 
@@ -75,6 +75,7 @@ luo-meta-skill/
 │   ├── research-and-synthesis.md
 │   ├── skill-architecture.md
 │   ├── instruction-craft.md
+│   ├── reference-routing.md
 │   └── iteration-and-evaluation.md
 ├── docs/
 │   └── skill-design.md
@@ -91,6 +92,7 @@ Runtime files: `SKILL.md` and `references/`. `docs/` records design intent and s
 ## Design principles
 
 - **Description is a routing contract.** The harness reads the name and description before the body; trigger conditions belong there.
+- **Routing is a decision, not an index.** Every reference needs a read-when, plus a skip-when when over-reading is a risk; the default path should need no reference.
 - **Capability over documentation volume.** A skill should change what the agent decides or does, not add files.
 - **Schemas only when consumed.** A produced skill with structured artifacts gets one authoritative schema (for example, `schemas/`) only when code, tests, or a validator consume it; derive code and tests from it.
 - **Shapes are starting points.** Procedure, knowledge, tool, judgment, and creative shapes; adapt them to the task.

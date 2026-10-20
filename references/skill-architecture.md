@@ -65,7 +65,9 @@ Start with one coherent `SKILL.md` and add components only when the work needs t
 - Routing: establish it only when inputs genuinely select different knowledge or tools. Provide a default path and make ambiguous cases recoverable.
 - Subagents, hooks, execution isolation, special frontmatter: use only when the target harness actually supports them and the benefit can be measured. Do not assume that one harness shares another harness's mechanisms.
 
-Complex skills may use shallow subdirectories under `references/` to make files easier to find. Do not build deep chains that hide essential guidance. A correct relative path does not prove that the harness can discover the reference. Check loading behavior in the real harness.
+Reference routing is a separate design problem. Use [reference-routing.md](reference-routing.md) to decide what to read, when, and when to skip it; a list of files is not routing.
+
+Keep knowledge references flat: `references/<name>.md`, so every file is one level from `SKILL.md`. Assets and scripts may use subdirectories. Do not build chains that hide essential guidance. A correct relative path does not prove that the harness can discover the reference. Check loading behavior in the real harness.
 
 ## Trigger design
 
@@ -112,7 +114,7 @@ Before delivery, ask:
 
 - Does every file have a clear purpose?
 - Does any structure exist for a need that does not exist?
-- Does `SKILL.md` make the main path clear and route the agent to required references before the relevant decision or action?
+- Does `SKILL.md` make the main path clear and route the agent to required references before the relevant decision or action, with a read-when, plus a skip-when when over-reading is a risk?
 - Are references routed by task rather than loaded by default?
 - Could fewer components achieve the same result?
 

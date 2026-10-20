@@ -26,6 +26,7 @@ Help an agent create, refactor, and improve reusable Agent Skills, with emphasis
 - Proportionate verification: choose checks by the changed behavior, risk, and uncertainty. Trigger checks apply to trigger changes; artifact, loading, execution, and contract checks apply to their respective changes. Distinguish designed test cases from observed failure evidence.
 - Harness neutrality: a harness is the agent runtime that discovers, loads, and runs skills. Verify platform mechanisms before relying on them; never assume availability from a file name.
 - Structured artifacts get one schema: keep field names, types, and value domains in one machine-readable schema (for example, `schemas/`) only when code, tests, or a validator consume it; derive code and tests from it.
+- Reference routing as a decision: every reference needs a read-when, plus a skip-when when over-reading is a risk; the default path should need no reference; a file index is not routing.
 
 ## File organization
 
@@ -33,9 +34,10 @@ Help an agent create, refactor, and improve reusable Agent Skills, with emphasis
 - `references/research-and-synthesis.md`: two-anchor research, source evaluation, knowledge conversion, external skill adaptation.
 - `references/skill-architecture.md`: scope and boundaries, specification documents, runtime structure, trigger boundary and case design, harness compatibility.
 - `references/instruction-craft.md`: semantics first, constraint strength, technical writing rules, trigger descriptions, revision strategy, precision check.
+- `references/reference-routing.md`: routing contract, formats, anti-patterns, routing tests.
 - `references/iteration-and-evaluation.md`: failure diagnosis, proportionate evaluation, trigger and output checks, honest reporting.
 
-The four references are routed by task and are not all loaded at startup. There are no scripts: current capability can be delivered with text instructions and existing tools, and scripts would add maintenance surface without demonstrated benefit. Add them when repeated, fragile, or deterministic needs appear.
+The five references are routed by task and are not all loaded at startup. There are no scripts: current capability can be delivered with text instructions and existing tools, and scripts would add maintenance surface without demonstrated benefit. Add them when repeated, fragile, or deterministic needs appear.
 
 ## Source trade-offs
 

@@ -21,7 +21,7 @@ Luo Meta Skill 是一套处理这些决策的方法。它帮助 agent 判断是�
 
 - **先判断是否值得做成 skill。** 区分可复用 skill、一次性任务、仓库约定和可确定性检查。
 - **先研究再写。** 用两个锚点：代表性任务与能力缺口，加上系统的领域知识。
-- **设计运行时结构。** 覆盖范围、引用路由、脚本与素材、harness 兼容性和主路径。
+- **设计运行时结构。** 覆盖范围、带 read-when / skip-when 的引用路由、脚本与素材、harness 兼容性和主路径。
 - **写精确指令。** 先定语义，再按行为脆弱性选择约束强度；把 `description` 当作路由契约。
 - **按风险验证。** 使用触发用例、真实产物、前后对比，并如实报告未测试的内容。
 
@@ -77,6 +77,7 @@ luo-meta-skill/
 │   ├── research-and-synthesis.md
 │   ├── skill-architecture.md
 │   ├── instruction-craft.md
+│   ├── reference-routing.md
 │   └── iteration-and-evaluation.md
 ├── docs/
 │   └── skill-design.md
@@ -93,6 +94,7 @@ luo-meta-skill/
 ## 设计原则
 
 - **description 是路由契约。** harness 在加载正文前读取 name 和 description；触发条件应放在这里。
+- **路由是决策，不是目录。** 每个 reference 都要有 read-when；有过度读取风险时要有 skip-when；默认路径不应依赖 reference。
 - **能力优先于文档数量。** skill 应改变 agent 的判断或行动，而不是增加文件。
 - **只在有消费方时加 schema。** 产出的 skill 如果有结构化产物，只保留一份权威 schema（例如 `schemas/`），且仅当代码、测试或校验器消费它时才加；代码和测试从 schema 派生。
 - **形态只是起点。** 流程、知识、工具、判断和创作是组织形态；按任务调整。

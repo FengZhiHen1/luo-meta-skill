@@ -67,6 +67,10 @@ Locate the layer of the problem:
 
 Replace, narrow, or delete the corresponding content. Do not use a new rule to hide a problem in an old rule. Update `docs/` only when intent, behavior, or implementation choices change. A wording change does not need a new version or snapshot.
 
+## Test reference routing
+
+Use three representative tasks: the default path, one branch that needs a reference, and one neighbor that should read none. Ask a reader who did not write the skill, or walk the three tasks as a new reader, which file they would read and which they would skip. If they cannot choose without opening the files, the route is unclear or missing. Also check that every reference is reachable exactly once and that no file is orphaned.
+
 ## Report honestly
 
 State exactly what was done:

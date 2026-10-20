@@ -1,6 +1,6 @@
 # Writing Precise Runtime Instructions
 
-Read when writing or materially changing `SKILL.md`, `description`, reference routing, or important operating rules.
+Read when writing or materially changing `SKILL.md`, `description`, or important operating rules; for routing design, use `reference-routing.md`.
 
 ## Settle semantics first
 
@@ -100,7 +100,7 @@ Before delivery, check each item:
 - Has a preference been written as a hard requirement?
 - Does the text invent numeric thresholds, source counts, or minimums without a real basis?
 - Has precision reduced legitimate room for professional judgment?
-- Does reference routing state when to read and when not to read?
+- Does reference routing state a default path and a read-when for every file, plus a skip-when when over-reading is a risk? Run the routing test in [reference-routing.md](reference-routing.md).
 
 ## Contrasting examples
 
@@ -113,6 +113,8 @@ Reference routing
 
 Weak: `Read the relevant documents when needed.`
 Better: `Read references/layout-selection.md before choosing a new page layout. Do not load it for text-only edits.`
+
+For the full contract, formats, and routing test, see [reference-routing.md](reference-routing.md).
 
 Professional judgment
 
