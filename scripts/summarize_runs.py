@@ -135,6 +135,8 @@ def main(argv):
     parser.add_argument("--skill-name", required=True)
     parser.add_argument("--case-file", default=None, help="case file, used for weight, kind, and holdout")
     parser.add_argument("--out", default=None, help="output directory; defaults to the iteration directory")
+    parser.add_argument("--executor-model", default=None, help="model that ran the cases; recorded in metadata")
+    parser.add_argument("--grader-model", default=None, help="model that graded the runs; recorded in metadata")
     parser.add_argument("--quiet", action="store_true")
     args = parser.parse_args(argv)
 
@@ -256,6 +258,8 @@ def main(argv):
             "configurations": sorted(configurations),
             "cases": len(cases),
             "case_file": case_file_label,
+            "executor_model": args.executor_model or "not recorded",
+            "grader_model": args.grader_model or "not recorded",
             "generated_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
         },
         "cases": cases,
@@ -300,6 +304,8 @@ def main(argv):
         + "is an observation, not a gain.",
         "",
         "Case file at aggregation time: " + case_file_label,
+        "",
+        "Executed by: " + (args.executor_model or "not recorded") + " | graded by: " + (args.grader_model or "not recorded"),
         "",
         "| Configuration | Cases | Pass rate | Tokens | Duration (ms) |",
         "| --- | --- | --- | --- | --- |",

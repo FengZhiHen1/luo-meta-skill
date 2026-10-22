@@ -43,6 +43,7 @@ Execute this task.
 - Task: <case prompt>
 - Input files: <fixture paths, or "none">
 - Save produced files to: <run directory>/outputs/
+- Do not modify input files. Copy anything you change into the output directory first.
 - Save run-notes.md outside outputs/ (in the run directory): which files you read, the main decisions, and anything unresolved.
 ```
 
