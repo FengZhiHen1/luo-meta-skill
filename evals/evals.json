@@ -72,7 +72,7 @@
       "kind": "diagnosis",
       "weight": 1,
       "holdout": false,
-      "prompt": "这个 skill（evals/files/weak-skill/）是我上个月写的，用户反馈它几乎不会被自动加载，偶尔手动用一次，输出也只是把 git log 换个说法。帮我看看问题在哪。",
+      "prompt": "这个 skill（evals/files/weak-skill/）是我上个月写的，用户反馈两件事：它几乎不会被自动加载；偶尔手动用一次，输出也只是把 commit 记录换个说法。帮我看看问题在哪。",
       "expected_output": "A diagnosis that names concrete causes in the description, the routing of the bundled reference, and the missing decision detail, with a confined fix and an honest statement of what is unverified.",
       "files": [
         "evals/files/weak-skill/SKILL.md",
@@ -80,12 +80,12 @@
       ],
       "source": {
         "kind": "derived",
-        "note": "task from recurring real reports of a skill that never triggers and produces thin output; the weak skill and its reference are fabricated"
+        "note": "task from recurring real reports of a skill that never triggers and produces thin output; the fixture is now deliberately professional-looking, so the failure is a vocabulary and routing gap rather than obvious filler"
       },
       "assertions": [
-        "The answer cites the specific text that causes the trigger problem and explains the mechanism, rather than describing the skill as vague",
-        "The answer notices that references/format.md is never routed from SKILL.md and treats it as a resource the agent will not load",
-        "The diagnosis identifies at least two causes at different layers: trigger description, missing decision detail, unloaded reference, or missing output contract",
+        "The answer identifies the vocabulary gap: the description uses internal terms instead of the words users type for this task, and names concrete replacements",
+        "The answer notices that the format guide is mentioned without a path or a read condition, so the agent will not load it",
+        "The diagnosis identifies at least two causes at different layers: trigger wording, missing decision detail, unloaded reference, or missing output contract",
         "The proposed change is confined to the causes identified and does not rewrite unrelated sections",
         "The answer states which check would confirm each fix and does not claim the fixes are verified"
       ]
@@ -216,6 +216,32 @@
         "The main path states the input, the judging or ordering decision, the output shape, and the stopping condition",
         "Behavior the old skill delivered is preserved or its removal is stated: rendering through scripts/render.py and the quality checklist",
         "The duplicate artifacts are resolved: the two template copies and the unused legacy script are either dropped or given a single authoritative path",
+        "The answer states which checks were run and which were not"
+      ]
+    },
+    {
+      "id": "design-reference-routing",
+      "kind": "routing",
+      "weight": 1,
+      "holdout": false,
+      "prompt": "这个 skill（evals/files/multi-reference-skill/）我们用了两周，反馈是两个极端：有时候三篇 reference 一篇都不读，直接凭印象评审；有时候又全读一遍，浪费时间。帮我把读取规则定清楚。",
+      "expected_output": "A routing block in SKILL.md with a default path that needs no reference, a read-when and a skip-when for each of the three references, and no reference left unreachable or unreferenced.",
+      "files": [
+        "evals/files/multi-reference-skill/SKILL.md",
+        "evals/files/multi-reference-skill/references/compatibility.md",
+        "evals/files/multi-reference-skill/references/error-handling.md",
+        "evals/files/multi-reference-skill/references/performance.md"
+      ],
+      "source": {
+        "kind": "derived",
+        "note": "recurring real complaint that an agent either skips all references or reads them all; the three references and the review skill are written for the case"
+      },
+      "assertions": [
+        "The routing block gives each of the three references a read-when condition",
+        "Each reference also gets a skip-when, or the answer states why over-reading is not a risk for it",
+        "The default path is stated and does not require reading any reference",
+        "Every reference file is reachable from the routing block exactly once, and no file is left unreferenced",
+        "The conditions are observable task cues, not restatements of the file names",
         "The answer states which checks were run and which were not"
       ]
     }

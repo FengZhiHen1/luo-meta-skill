@@ -1,34 +1,27 @@
 ---
 name: release-notes-helper
-description: Use when writing release notes — reads the git log, groups commits by type, drafts a changelog entry, edits it for tone, and asks the user to confirm before publishing.
+description: Use when producing release documentation artifacts — consolidates commit metadata into the standardized release communication unit, applies the house style profile, and hands off to the distribution channel owner.
 ---
 
 # Release Notes Helper
 
-This skill helps you write release notes. Release notes are important because users need to know
-what changed. Good release notes build trust and reduce support load.
+## Position in the pipeline
 
-## Overview
+This skill occupies the release documentation slot between merge freeze and distribution. It consumes
+commit metadata and emits the standardized release communication unit.
 
-You should always aim for clarity. Consider the audience, consider the format, and consider the
-tone. A good release note is concise but complete.
+## Operating model
 
-## Steps
+1. Ingest commit metadata from the repository of record.
+2. Apply the house style profile to the consolidated metadata set.
+3. Emit the release communication unit for channel distribution.
 
-1. Understand the context.
-2. Think about what matters.
-3. Write the notes.
-4. Review the notes.
-5. Improve the notes.
+## Conventions
 
-## Principles
+- Terminology follows the documentation style profile.
+- Artefacts inherit the release window identifier.
+- Exceptions route to the release manager for disposition.
 
-- Be clear.
-- Be accurate.
-- Be consistent.
-- Follow the project conventions.
-- Ask the user when unsure.
-
-## Notes
+## Resources
 
 The format guide is stored in the references directory.

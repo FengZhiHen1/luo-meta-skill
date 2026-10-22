@@ -115,6 +115,32 @@ def read_run(run_dir, schema, errors):
     return record
 
 
+def collect_runs(config_dir, schema, errors):
+    """Read one grading.json from the config directory, or average the run-*/ repetitions inside it."""
+    single = config_dir / "grading.json"
+    if single.exists():
+        record = read_run(config_dir, schema, errors)
+        return [record] if record else []
+    attempts = []
+    for sub in sorted(item for item in config_dir.iterdir() if item.is_dir() and item.name.startswith("run-")):
+        record = read_run(sub, schema, errors)
+        if record:
+            attempts.append(record)
+    return attempts
+
+
+def merge_assertions(attempts):
+    """An assertion counts as passed only when every repetition passed it."""
+    verdicts = {}
+    for attempt in attempts:
+        for item in attempt.get("assertions", []):
+            text = item.get("text")
+            if text is None:
+                continue
+            verdicts.setdefault(text, []).append(item.get("passed") is True)
+    return [{"text": text, "passed": all(values)} for text, values in verdicts.items()]
+
+
 def weighted_pass_rate(cases, configuration):
     weighted = 0.0
     total_weight = 0.0
@@ -174,10 +200,25 @@ def main(argv):
         eval_id = eval_dir.name[len("eval-"):]
         runs = {}
         for config_dir in sorted(p for p in eval_dir.iterdir() if p.is_dir()):
-            run = read_run(config_dir, schema, errors)
-            if run is not None:
-                runs[config_dir.name] = run
-                configurations.add(config_dir.name)
+            attempts = collect_runs(config_dir, schema, errors)
+            if not attempts:
+                continue
+            rates = [item["pass_rate"] for item in attempts]
+            merged = {
+                "pass_rate": round(sum(rates) / len(rates), 3),
+                "passed": round(sum(item["passed"] for item in attempts) / len(attempts), 2),
+                "failed": round(sum(item["failed"] for item in attempts) / len(attempts), 2),
+                "total": attempts[0]["total"],
+                "runs": len(attempts),
+                "spread": round(max(rates) - min(rates), 3),
+            }
+            for key in ("tokens", "duration_ms"):
+                known = [item[key] for item in attempts if isinstance(item.get(key), (int, float))]
+                if known:
+                    merged[key] = round(sum(known) / len(known))
+            merged["assertions"] = merge_assertions(attempts)
+            runs[config_dir.name] = merged
+            configurations.add(config_dir.name)
         if not runs:
             errors.append(eval_dir.name + ": no valid grading.json")
             continue
@@ -319,15 +360,16 @@ def main(argv):
         "",
         "Delta: " + str(benchmark["summary"]["delta"]),
         "",
-        "| Case | Kind | " + WITH_SKILL + " | " + (baseline_name or "baseline") + " | Delta |",
-        "| --- | --- | --- | --- | --- |",
+        "| Case | Kind | " + WITH_SKILL + " | " + (baseline_name or "baseline") + " | Delta | Runs | Spread |",
+        "| --- | --- | --- | --- | --- | --- | --- |",
     ]
     for case in cases:
         with_run = case["configurations"].get(WITH_SKILL, {})
         base_run = case["configurations"].get(case.get("baseline", ""), {}) if case.get("baseline") else {}
         lines.append(
             "| " + case["eval_id"] + " | " + case["kind"] + " | " + str(with_run.get("pass_rate", "missing"))
-            + " | " + str(base_run.get("pass_rate", "missing")) + " | " + str(case.get("delta", "n/a")) + " |"
+            + " | " + str(base_run.get("pass_rate", "missing")) + " | " + str(case.get("delta", "n/a"))
+            + " | " + str(with_run.get("runs", 1)) + " | " + str(with_run.get("spread", 0)) + " |"
         )
     if non_discriminating:
         lines += ["", "Cases that pass without the skill: " + ", ".join(non_discriminating)]
