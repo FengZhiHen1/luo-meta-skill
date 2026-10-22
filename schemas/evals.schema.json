@@ -82,9 +82,34 @@
         "weight": {
           "type": "number",
           "minimum": 0
+        },
+        "source": {
+          "$ref": "#/$defs/source"
         }
       },
       "additionalProperties": true
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "kind"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "real",
+            "derived",
+            "synthetic"
+          ]
+        },
+        "note": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": true,
+      "description": "Provenance of the task requirement behind the case."
     }
   }
 }

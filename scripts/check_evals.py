@@ -22,7 +22,7 @@ DEFAULT_SKILL_ROOT = SCRIPT_DIR.parent
 DEFAULT_SCHEMA = SCRIPT_DIR.parent / "schemas" / "evals.schema.json"
 KNOWN_CASE_FIELDS = {
     "id", "prompt", "expected_output", "files", "assertions", "expectations",
-    "kind", "expect_trigger", "holdout", "weight",
+    "kind", "expect_trigger", "holdout", "weight", "source",
 }
 
 TYPE_MAP = {
@@ -117,6 +117,7 @@ def lint(cases, skill_root, quiet):
     seen_ids = {}
     seen_prompts = {}
     holdouts = 0
+    anchored = 0
     extra_fields = set()
     alias_users = 0
 
@@ -138,6 +139,11 @@ def lint(cases, skill_root, quiet):
             warnings.append(label + ": expect_trigger is ignored for kind '" + str(case.get("kind")) + "'")
         if case.get("holdout") is True:
             holdouts += 1
+        source = case.get("source")
+        if isinstance(source, dict) and source.get("kind") in ("real", "derived"):
+            anchored += 1
+        elif source is None:
+            warnings.append(label + ": no source declared; record where the task requirement comes from")
 
         prompt = case.get("prompt")
         if isinstance(prompt, str):
@@ -153,6 +159,11 @@ def lint(cases, skill_root, quiet):
 
     if alias_users and not quiet:
         warnings.append(str(alias_users) + " case(s) use 'expectations'; write 'assertions'")
+    if cases and anchored == 0 and not quiet:
+        warnings.append("no case declares a real or derived source; this set can gate exploration "
+                        "but cannot support a necessity or quality claim")
+    elif cases and anchored < len(cases) and not quiet:
+        warnings.append(str(len(cases) - anchored) + " case(s) are synthetic; conclusions must exclude them")
     if cases and holdouts == 0 and not quiet:
         warnings.append("no case is marked holdout=true; tuning on the whole set risks overfitting")
     if extra_fields and not quiet:

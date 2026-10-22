@@ -87,6 +87,23 @@ Grade in the cheapest layer that can decide the question.
 
 Do not grade a run you executed, and do not treat the author's own reading as independent grading. Label self-review as self-review.
 
+## Evidence strength
+
+Match the claim to the evidence before writing any sentence about improvement.
+
+| Evidence | The claim it supports |
+| --- | --- |
+| one case, one run | an observation about that case |
+| several anchored cases, each discriminating or explained, verdict read from holdout | this version does better on these task shapes |
+| cases that all pass without the skill | the skill adds nothing on those cases |
+| only `synthetic` cases | exploration; no necessity or quality claim |
+| delta inside the noise band across repetitions | no observed difference |
+
+- Treat a delta smaller than the spread you observed between repetitions as no difference.
+- Never present a rerun of one case as a second case.
+- Never turn an expectation into a result: mark what was not measured as missing.
+- Audit the set with [eval-audit.md](eval-audit.md) before spending executors on it and again before reporting.
+
 ## Read the results
 
 | Signal | Meaning | Action |

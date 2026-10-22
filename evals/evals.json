@@ -9,6 +9,10 @@
       "prompt": "我们组每周五都要汇总这一周的线上事故、发一封复盘邮件给管理层。流程基本固定：从 Jira 导出本周事故、按严重度分级、每条写影响范围/根因/后续动作，最后按影响面排序。每次都要花两三个小时，帮我做成一个能反复用的 skill。",
       "expected_output": "A skill directory for the weekly incident review: a scoped description, an executable main path covering export, grading, entry shape, and ordering, the output artifact, and a stated basis for checking it.",
       "files": [],
+      "source": {
+        "kind": "synthetic",
+        "note": "prompt written for the case; the requirement (turn a recurring weekly report into a reusable skill) is generic, the scenario and data are invented"
+      },
       "assertions": [
         "A SKILL.md exists with YAML frontmatter that has non-empty name and description",
         "The description states the job and the conditions that trigger it, and does not summarize the steps of the workflow",
@@ -26,6 +30,10 @@
       "prompt": "我们仓库对 skill 有两条硬性要求：目录名必须小写并用连字符，SKILL.md 的 frontmatter 必须有 name 和 description。现在这两条老是有人漏，帮我做个 skill，让 AI 每次新增或改 skill 时都按这两条来。",
       "expected_output": "One realistic request, answered by routing each requirement to the mechanism that enforces it, not by packaging a runtime skill: project instructions for the naming convention, a validator or test for the frontmatter field.",
       "files": [],
+      "source": {
+        "kind": "derived",
+        "note": "adapted from this project's real skill conventions (lowercase-hyphen directories, required frontmatter); the request is worded as a user would ask it"
+      },
       "assertions": [
         "The answer does not build a runtime skill for these two requirements, or it states up front why a skill is the wrong mechanism before producing anything",
         "The naming convention is routed to project instructions or documentation that the agent reads while editing skills, not to a skill body",
@@ -45,6 +53,10 @@
         "evals/files/weak-skill/SKILL.md",
         "evals/files/weak-skill/references/format.md"
       ],
+      "source": {
+        "kind": "derived",
+        "note": "task from recurring real reports of a skill that never triggers and produces thin output; the weak skill and its reference are fabricated"
+      },
       "assertions": [
         "The answer cites the specific text that causes the trigger problem and explains the mechanism, rather than describing the skill as vague",
         "The answer notices that references/format.md is never routed from SKILL.md and treats it as a resource the agent will not load",
@@ -66,6 +78,10 @@
         "evals/files/description-boundary/neighbor/SKILL.md",
         "evals/files/description-boundary/requests.md"
       ],
+      "source": {
+        "kind": "derived",
+        "note": "adapted from recorded route-confusion cases between neighboring skills; skill names and requests rewritten for the fixture"
+      },
       "assertions": [
         "The revised description is a single YAML string without angle brackets and within 1024 characters",
         "The revised description states the job and the trigger conditions, and does not summarize the body's steps",
@@ -85,6 +101,10 @@
       "files": [
         "evals/files/source-notes.md"
       ],
+      "source": {
+        "kind": "synthetic",
+        "note": "source notes and prompt fabricated; the failure pattern (research text not converted into runtime decisions) is real but this case is not anchored"
+      },
       "assertions": [
         "The skill contains decision cues or checks that change what the agent comments on, not a summary of the notes",
         "Conditions and trade-offs from the notes survive where they change behavior: large diffs, waiver convention, generated code, review latency",
@@ -103,6 +123,10 @@
       "files": [
         "evals/files/behavior-change/SKILL.md"
       ],
+      "source": {
+        "kind": "derived",
+        "note": "adapted from the recurring real pressure to skip verification under a delivery deadline; the skill under change is fabricated"
+      },
       "assertions": [
         "The answer separates the wording-level edits from the behavior change and scales verification to each",
         "The answer produces concrete test cases with prompts and observable success criteria for the behavior change, even though the user asked to skip evaluation",

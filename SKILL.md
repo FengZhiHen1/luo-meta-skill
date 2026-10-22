@@ -1,6 +1,6 @@
 ---
 name: luo-meta-skill
-description: Design, create, refactor, improve, and measure reusable Agent Skills. Use when developing a new SKILL.md, researching domain expertise for a skill, planning a skill specification or runtime references, diagnosing weak or mis-triggered skill behavior, optimizing a skill description, building a skill test set, or running with-skill and without-skill comparisons to show that a skill is necessary and good. Also use for requests to create, rewrite, optimize, benchmark, or evaluate Agent Skills. Do not use to execute an existing skill, perform a one-off task, or edit ordinary project documentation.
+description: Design, create, refactor, improve, and measure reusable Agent Skills. Use when developing a new SKILL.md, researching domain expertise for a skill, planning a skill specification or runtime references, diagnosing weak or mis-triggered skill behavior, optimizing a skill description, building a skill test set, auditing whether a test set or its result can support the claim made from it, or running with-skill and without-skill comparisons to show that a skill is necessary and good. Also use for requests to create, rewrite, optimize, benchmark, or evaluate Agent Skills. Do not use to execute an existing skill, perform a one-off task, or edit ordinary project documentation.
 ---
 
 # Luo Meta Skill
@@ -44,6 +44,7 @@ Read a reference only when the work requires it. Do not load all references by d
 | Diagnosing failures, evaluating triggers or outputs, or comparing revisions | [iteration-and-evaluation.md](references/iteration-and-evaluation.md) | A new design with no observed failure |
 | Designing or revising test cases, or deciding what evidence would show that a skill works | [test-set-design.md](references/test-set-design.md) | A wording or path fix that needs no reusable evidence |
 | Running a test set through independent executors, grading outputs, or reporting measured results | [benchmark-runs.md](references/benchmark-runs.md) | The user needs a design review, or no fresh executor is available |
+| Judging whether a test set, a case, or a measured result can support its claim | [eval-audit.md](references/eval-audit.md) | There is no case set and no result to judge |
 
 A small fix may need no reference. Combine references when the work genuinely spans their concerns.
 
@@ -90,7 +91,7 @@ See [instruction-craft.md](references/instruction-craft.md) for examples and bou
 
 - Small fix: check the affected text, paths, and reference targets.
 - Behavior change: use representative tasks and important boundaries that exercise the changed behavior. Inspect actual artifacts and execution traces. For trigger changes, test positive, negative, and neighboring cases in the target harness; a text review is not a trigger test.
-- When the result matters, the conclusion is uncertain, or the user asks for measured evidence: build or update the skill's test set ([test-set-design.md](references/test-set-design.md)) and run it in independent executors ([benchmark-runs.md](references/benchmark-runs.md)). Without a fresh executor, do not run the benchmark; deliver the test set and say what remains unmeasured.
+- When the result matters, the conclusion is uncertain, or the user asks for measured evidence: build or update the skill's test set ([test-set-design.md](references/test-set-design.md)), audit it ([eval-audit.md](references/eval-audit.md)), then run it in independent executors ([benchmark-runs.md](references/benchmark-runs.md)). Without a fresh executor, do not run the benchmark; deliver the test set and say what remains unmeasured.
 - Distinguish three states: structure checked, design reviewed, runtime behavior tested. Do not report a test that was not run as passed.
 - When behavior or design changes, update the affected `docs/`. A wording-only change does not require a new snapshot or a second authoritative explanation.
 - Deliver usable files and a concise explanation: major design choices, verification actually performed, and remaining material limitations. Unless the user asks, do not produce scorecards, evidence reports, or governance checklists.

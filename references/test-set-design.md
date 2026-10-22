@@ -23,12 +23,36 @@ A case earns its place in one of two ways: it fails without the skill, or it rep
 
 Start with two or three `task` cases. Expand from observed failures, not from an imagined coverage matrix.
 
-## Write the prompt
+## Anchor every case in a real task
 
-- Use the words a real user types for this task: file names, tool names, domain terms, personal context, and the shorthand or mixed language they actually use.
-- Vary formality, length, and detail across cases.
-- Do not name the skill, hint at its method, or describe the expected output.
+A case may be a request captured almost verbatim, or a prompt written for the case. Both are valid. What is not valid is a prompt that exists only because it is convenient to grade.
+
+A case matches the real task when it keeps:
+
+- the real inputs and their defects;
+- the ambiguity the requester actually leaves;
+- the real constraints and deadline;
+- the artifact the requester actually needs;
+- the requester's actual level of knowledge.
+
+Adaptation rules:
+
+- Keep the original wording when you have it. Replace names, paths, and identifiers to remove private data without making the task cleaner.
+- Never add a hint, the method, or the expected output.
+- Never add difficulty the real task does not have, and never remove the part that makes it hard.
+- Use the file names, tool names, domain terms, and shorthand or mixed language the audience really uses.
+- One task per prompt. Bundle requests only when real users bundle them.
 - Make the request substantial enough that a capable agent benefits from instructions. A one-step request tests nothing.
+
+Sources for real task requirements: past requests and session history, issue and pull-request threads, support tickets, chat, failure reviews, and the user's own prompts. Ask for two or three when nothing is on hand.
+
+Record the provenance in the case:
+
+```json
+"source": {"kind": "derived", "note": "adapted from a failed weekly-report request; kept the missing-field data, removed the company names"}
+```
+
+`kind` is `real` for a captured request, `derived` for a prompt written from a real requirement, and `synthetic` for no real anchor. A set of only `synthetic` cases can gate exploration; it cannot support a claim about necessity or quality. Audit the set with [eval-audit.md](eval-audit.md) before you trust its numbers.
 
 ## Provide inputs
 
@@ -98,12 +122,13 @@ The default case file is `evals/evals.json`, using the Agent Skills eval shape:
 }
 ```
 
-`prompt` is the only required case field. Optional case fields: `id`, `expected_output`, `files`, `assertions`, `kind`, `expect_trigger`, `holdout`, `weight`.
+`prompt` is the only required case field. Optional case fields: `id`, `expected_output`, `files`, `assertions`, `kind`, `expect_trigger`, `holdout`, `weight`, `source`.
 
 - `kind` is one of `task`, `trigger`, `contract`, `pressure`, `routing`. The default is `task`.
 - `expect_trigger` applies to `kind`: `trigger` only.
 - `holdout` marks a case excluded from tuning.
 - `weight` defaults to `1`.
+- `source.kind` is `real`, `derived`, or `synthetic`; `source.note` says what was adapted.
 
 Read other formats when the project already has them. Normalize into this model and report what you mapped, what you dropped, and what you inferred. Conflict resolution prefers the default file.
 

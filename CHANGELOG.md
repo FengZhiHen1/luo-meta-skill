@@ -10,6 +10,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - `references/test-set-design.md`: two-question framing (necessity and quality), case families, prompt and fixture design, the assertion discriminating test, trigger and pressure cases, holdout, the default case format, and mapping for foreign case formats.
 - `references/benchmark-runs.md`: executor preconditions and refusal rule, run layout, isolation rules, capture, repetitions, three grading layers, weak-assertion and necessity reading, and reporting rules.
+- `references/eval-audit.md`: how to judge whether a case, a set, or a measured result can support its claim, including anchor, discrimination, baseline validity, coverage, author bias, instrument drift, and the conclusion-strength table.
+- `source` field on cases (`real`, `derived`, `synthetic`) with a provenance note; `test-set-design.md` now requires every case to be anchored in a real task requirement, allows an authored prompt, and forbids invented difficulty or hints.
+- `benchmark-runs.md` gains an evidence-strength table; a delta inside the observed spread is reported as no difference, and synthetic-only sets cannot support a necessity claim.
 - `scripts/check_evals.py`: validates a case file against `schemas/evals.schema.json`, checks fixture paths, duplicate ids, and trigger-case consistency. Standard library only.
 - `scripts/summarize_runs.py`: aggregates an iteration into `benchmark.json` and `benchmark.md` with with-skill versus baseline delta, non-discriminating cases, and weak assertions. Standard library only.
 - `schemas/evals.schema.json` and `schemas/results.schema.json`: authoritative shape of the case file and the run result files; the scripts read them instead of restating field rules.

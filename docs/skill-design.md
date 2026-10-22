@@ -24,6 +24,7 @@ Help an agent create, refactor, and improve reusable Agent Skills, with emphasis
 - Precise technical instructions: settle semantics first, then choose constraint strength by behavior fragility. Borrow ASD-STE100 clarity principles without claiming conformity. Apply them only to technical runtime instructions, not to creative output or source material.
 - Knowledge freshness and organization: keep durable guidance in the skill, refresh volatile facts, and organize runtime references by task rather than by source. The main path may rely on references when the entry point routes the agent to them before use.
 - Proportionate verification: choose checks by the changed behavior, risk, and uncertainty. Trigger checks apply to trigger changes; artifact, loading, execution, and contract checks apply to their respective changes. Distinguish designed test cases from observed failure evidence.
+- A case is anchored in a real task requirement, not in the author's idea of the task. A prompt may be written for the case; what must not be invented is the difficulty, the missing input, or the hint that makes it pass.
 - Test sets answer two questions: whether the skill is necessary, and whether this version is better. The necessity answer comes from running the same cases with no skill and with the skill; a case the bare agent already passes measures nothing.
 - Measurement requires an independent executor. A fresh agent, session, or process starts without the authoring history; without one, the skill delivers the case set and states what remains unmeasured instead of self-running it.
 - Harness neutrality: a harness is the agent runtime that discovers, loads, and runs skills. Verify platform mechanisms before relying on them; never assume availability from a file name.
@@ -40,8 +41,9 @@ Help an agent create, refactor, and improve reusable Agent Skills, with emphasis
 - `references/iteration-and-evaluation.md`: failure diagnosis, proportionate evaluation, trigger and output checks, honest reporting.
 - `references/test-set-design.md`: two-question framing, case families, prompt and fixture design, assertion discriminating test, trigger and pressure cases, holdout, default case format and foreign-format mapping.
 - `references/benchmark-runs.md`: executor preconditions, run layout, isolation rules, capture, repetitions, three grading layers, weak-assertion and necessity reading, reporting.
+- `references/eval-audit.md`: four instrument properties, per-case verdicts, set-level audit (coverage, family balance, independent cases, author bias, instrument drift), conclusion-strength table, and the audit of a set someone else wrote.
 
-The seven references are routed by task and are not all loaded at startup.
+The eight references are routed by task and are not all loaded at startup.
 
 `scripts/check_evals.py` and `scripts/summarize_runs.py` exist because both tasks are deterministic and repeated: validating a case file against `schemas/evals.schema.json`, and aggregating run results into `benchmark.json` and `benchmark.md`. Both use the Python standard library only, so no dependency changes. Grading stays with an agent and a written rule set; it is judgment, not a script.
 
