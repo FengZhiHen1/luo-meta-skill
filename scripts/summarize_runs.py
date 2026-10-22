@@ -91,6 +91,9 @@ def read_run(run_dir, schema, errors):
         total = record["total"] or 1
         pass_rate = record["passed"] / total
     record["pass_rate"] = round(float(pass_rate), 3)
+    if record["total"] and record["total"] != len(grading.get("assertions", [])):
+        print("WARN: " + str(grading_path) + ": summary.total disagrees with the assertion count; "
+              "the file may still be mid-write, so re-run the aggregation")
     record["assertions"] = [
         {"text": item.get("text"), "passed": item.get("passed")}
         for item in grading.get("assertions", []) if isinstance(item, dict)

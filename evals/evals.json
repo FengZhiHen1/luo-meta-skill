@@ -121,8 +121,8 @@
       "kind": "task",
       "weight": 1,
       "holdout": true,
-      "prompt": "这份研究笔记（evals/files/research-to-runtime/source.md）我攒了一阵子，讲的都是运行时指令该怎么写才不产生歧义。帮我把它变成能用的东西：我要的是以后写 skill 时真的按它执行，不是再读一遍研究。",
-      "expected_output": "Runtime instructions that make the research operational: the conditions it distinguishes become decision cues and rules the agent applies, with the trade-offs preserved and the long material routed to a reference.",
+      "prompt": "这份研究笔记（evals/files/research-to-runtime/source.md）我攒了一阵子，讲的是运行时指令怎么写才不产生歧义。帮我把它做成一个 skill：以后我写或改 skill 的运行时指令时，就按这个 skill 的流程执行，而不是再读一遍研究。skill 放到输出目录。",
+      "expected_output": "A skill that operationalizes the notes: their distinctions become decisions or checks the instruction writer applies, the conditions and trade-offs survive, the long material sits behind a routed reference, and nothing is asserted beyond what the notes support.",
       "files": [
         "evals/files/research-to-runtime/source.md"
       ],
@@ -131,11 +131,12 @@
         "note": "source.md is a real research document from this repository; the request is the recurring task of turning research into runtime instructions"
       },
       "assertions": [
-        "The skill contains decision cues or checks that change what the agent comments on, not a summary of the notes",
-        "Conditions and trade-offs from the notes survive where they change behavior: large diffs, waiver convention, generated code, review latency",
-        "Long source material is placed in references or docs and routed from the body, not inlined into SKILL.md",
-        "The skill's output contract makes a comment actionable by requiring a concrete failure scenario or a blocking label",
-        "No claim appears that the notes do not support, and no source is cited as authority for a rule it does not state"
+        "A skill is produced whose description states when to use it for writing or revising runtime instructions",
+        "At least three distinctions from the notes become decisions or checks the writer must apply, not a summary of the notes",
+        "The conditions and trade-offs survive: when a strict contract is required, when judgment or creative latitude applies, and the stated exceptions",
+        "The long source material is routed to a reference instead of being inlined into SKILL.md",
+        "No claim appears that the notes do not support, and the notes own uncertainty markers are preserved",
+        "The skill states how the writer verifies the instruction without claiming the notes were validated"
       ]
     },
     {
