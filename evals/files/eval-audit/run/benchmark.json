@@ -1,0 +1,99 @@
+{
+  "metadata": {
+    "skill_name": "luo-meta-skill",
+    "iteration": "iteration-1",
+    "configurations": [
+      "with_skill",
+      "without_skill"
+    ],
+    "cases": 1,
+    "generated_at": "2026-10-22T08:55:13+00:00"
+  },
+  "cases": [
+    {
+      "eval_id": "create-skill-from-workflow",
+      "kind": "task",
+      "holdout": false,
+      "weight": 1.0,
+      "configurations": {
+        "with_skill": {
+          "pass_rate": 0.83,
+          "passed": 5,
+          "failed": 1,
+          "total": 6,
+          "assertion_feedback": [
+            "断言 6 是唯一失败项：脚本有 13 个 pytest 用例，但 skill 层面没有带 prompt 的用例集。把 run-notes 里「3 正例 + 2 负例」落成 5 条具名用例（每条含触发 prompt、期望是否触发、期望产出中的可核对项，例如「未触发时不得读任何 reference」「空周邮件必须含窗口与 0 起」），再放 tests/ 或 evals/，即可转绿。",
+            "断言 1、4 对明显不合格的输出也会通过：1 只要求 frontmatter 有非空 name/description（写「每周事故」也能过）；4 是缺席式判定，只要正文从不提历史就通过，与该文件是否给出可用指令无关。",
+            "断言 3 判定为「表面齐备」：四要素在 SKILL.md 中都有明确落点且引用的 6 个文件均存在，但断言本身只要求「看得出」输入/排序/输出/停止，不要求这些步骤真能跑通，故措辞空洞的输出也能过。",
+            "断言 5 判定通过的关键是 run-notes 同时写了「已执行」与「未测」两栏；我用临时副本复跑 pytest 与 pyyaml 校验，13 passed 与 description 185 字符均属实，未见虚构运行记录。",
+            "无断言覆盖但实际成立的重要结果（已验证）：scripts/prepare_digest.py 可执行，tests 全绿；assets/filled-example.md 是基于 fixtures 的完整成稿样例；SKILL.md「本周无事故」分支独立覆盖空周（B 侧无此分支）。",
+            "无断言覆盖的风险：该 skill 目录内还含 docs/design-notes.md（维护用设计说明），断言 4 只约束 SKILL.md，因此 skill 目录里夹带设计纪事、若整体分发会带出去这件事没有断言把关。"
+          ],
+          "duration_ms": 151183
+        },
+        "without_skill": {
+          "pass_rate": 0.67,
+          "passed": 4,
+          "failed": 2,
+          "total": 6,
+          "assertion_feedback": [
+            "断言 2 失败：description 里那句「流程为：从 Jira 导出本周事故 CSV → 按严重度 S1-S4 分级 → 逐条写影响范围/根因/后续动作 → 按影响面评分排序 → 用质量门禁校验后发信」是典型的步骤摘要，会让 agent 以为照描述即可跳过正文；删掉这句，只留「做什么 + 何时触发 + 不用于什么」即可。",
+            "断言 6 失败：脚本有冒烟数据和一条冒烟判据，但缺带 prompt 的行为用例（正例：有 Jira 导出 / 无导出只有聊天记录 / 空周；负例：单次事故 RCA、值班交接）。每条给 prompt + 期望是否触发 + 产出里可核对的字段即可。",
+            "断言 1、4 对明显不合格的输出也会通过：1 只查 name/description 非空；4 只查「没有历史纪事」这种缺席条件，正文写得再不可执行也能过。",
+            "断言 3 判定通过，但需注意其判据是「四要素在正文可见」；该 skill 确实给出 JQL、脚本命令、产物路径与「ERROR 清零才能发信」的停止条件，且 8 个引用文件均存在，属实质满足而非表面合规。",
+            "断言 5 判定通过：已跑/未确认两栏分明，我复现了其中三项声明（冒烟顺序、17 条 ERROR 退出码 1、overrides 后 PROJ-1064 升首位），未发现虚构运行。",
+            "无断言覆盖但重要的结果：SKILL.md 未处理「本周无事故」这一必然发生的分支（全文无「无事故 / 0 起」路径），脚本是否对空输入给出可用草稿也未在正文说明；另外影响面用 7 维加权总分排序，与用户口述的「按影响面排序」口径存在解释差（是否算偏离流程，无断言评判）。"
+          ],
+          "duration_ms": 156018
+        }
+      },
+      "delta": 0.16,
+      "baseline": "without_skill",
+      "discriminating": true,
+      "weak_assertions": [
+        "A SKILL.md exists with YAML frontmatter that has non-empty name and description",
+        "No iteration log, source history, or maintenance rationale appears in SKILL.md",
+        "The answer states which checks were run and which remain untested, and does not claim a completed run that did not happen",
+        "The body gives the agent a main path it can execute: the input, the ordering decision, the output shape, and the stopping condition"
+      ]
+    }
+  ],
+  "summary": {
+    "with_skill": {
+      "configuration": "with_skill",
+      "cases": 1,
+      "pass_rate": 0.83,
+      "tokens": 0,
+      "duration_ms": 151183
+    },
+    "baseline": {
+      "configuration": "without_skill",
+      "cases": 1,
+      "pass_rate": 0.67,
+      "tokens": 0,
+      "duration_ms": 156018
+    },
+    "delta": 0.16,
+    "non_discriminating_cases": [],
+    "weak_assertions": [
+      {
+        "eval_id": "create-skill-from-workflow",
+        "text": "A SKILL.md exists with YAML frontmatter that has non-empty name and description"
+      },
+      {
+        "eval_id": "create-skill-from-workflow",
+        "text": "No iteration log, source history, or maintenance rationale appears in SKILL.md"
+      },
+      {
+        "eval_id": "create-skill-from-workflow",
+        "text": "The answer states which checks were run and which remain untested, and does not claim a completed run that did not happen"
+      },
+      {
+        "eval_id": "create-skill-from-workflow",
+        "text": "The body gives the agent a main path it can execute: the input, the ordering decision, the output shape, and the stopping condition"
+      }
+    ],
+    "missing_configurations": [],
+    "excluded_cases": []
+  }
+}

@@ -14,11 +14,13 @@
         "note": "prompt written for the case; the requirement (turn a recurring weekly report into a reusable skill) is generic, the scenario and data are invented"
       },
       "assertions": [
-        "A SKILL.md exists with YAML frontmatter that has non-empty name and description",
+        "A SKILL.md exists whose frontmatter has a non-empty name and description",
         "The description states the job and the conditions that trigger it, and does not summarize the steps of the workflow",
-        "The body gives the agent a main path it can execute: the input, the ordering decision, the output shape, and the stopping condition",
-        "No iteration log, source history, or maintenance rationale appears in SKILL.md",
-        "The answer states which checks were run and which remain untested, and does not claim a completed run that did not happen",
+        "The description carries an explicit non-applicable case, and contains no arrow or numbered step sequence",
+        "The body path names the input, the ordering decision, the output shape, and the stopping condition, and every file it names exists in the produced skill",
+        "SKILL.md contains no version history, iteration log, or maintenance rationale",
+        "The skill directory contains no docs folder, design notes, or run notes",
+        "Every check reported as executed carries the command and its observed result",
         "Concrete test cases with prompts and observable success criteria are produced or proposed for this skill"
       ]
     },
@@ -40,6 +42,29 @@
         "The frontmatter requirement is routed to a validator, test, or build step that fails when the field is missing",
         "No skill directory or SKILL.md is created in the answer",
         "Each mechanism is named with what it enforces and why it holds where a runtime skill would not"
+      ]
+    },
+    {
+      "id": "accept-warranted-skill",
+      "kind": "contract",
+      "weight": 1,
+      "holdout": false,
+      "prompt": "我们每轮都要按同一份 BRIEF 精修一套 PPT 框架库（evals/files/repeated-campaign/BRIEF.md），已经按它跑了五轮，每轮 8-12 页，判据和渲染命令一直没变。这个流程帮我做成 skill。",
+      "expected_output": "A skill is built, with the recurring judging criteria, render commands, and known pitfalls available per round without loading everything by default, the per-round deliverable and rework condition stated, and no current-round material baked in.",
+      "files": [
+        "evals/files/repeated-campaign/BRIEF.md"
+      ],
+      "source": {
+        "kind": "derived",
+        "note": "real repeated campaign: five rounds of the same ppt framework refinement appear in this project's sessions on 2026-10-20 and 2026-10-21; the brief is an excerpt written for the case"
+      },
+      "assertions": [
+        "The answer builds a skill and grounds the decision in the repetition plus the fixed judging criteria, rather than answering with a one-off plan",
+        "The description states the job and the trigger conditions, not the sequence of a round",
+        "The judging criteria, render commands, and known pitfalls are available on demand rather than all inlined into SKILL.md",
+        "The per-round deliverable and the rework condition (a criterion scoring below 3 returns to rework) appear in the skill",
+        "No current-round material appears in the skill: no specific deck names and no scores from one round",
+        "The answer states which checks were run and which were not"
       ]
     },
     {
@@ -71,7 +96,7 @@
       "weight": 1,
       "holdout": false,
       "prompt": "这个 sql-reviewer（evals/files/description-boundary/SKILL.md）触发太不准了：明明在问迁移方案也能把它拉起来，真正让它看索引问题时又不出现。旁边还有个 migration-planner 在抢活儿。这些是我们最近真实的请求（evals/files/description-boundary/requests.md）。帮我把 description 弄准。",
-      "expected_output": "A revised description that states the job and the trigger boundary for SQL review, excludes migration planning owned by the neighboring skill, uses the vocabulary of the real requests, and reports whether triggering was tested or only reviewed.",
+      "expected_output": "A revised description plus a routing prediction for every request in requests.md: SQL review requests trigger, migration-planning requests are left to the neighboring skill, and unrelated work does not trigger. The answer says whether the predictions were tested.",
       "files": [
         "evals/files/description-boundary/SKILL.md",
         "evals/files/description-boundary/neighbor/SKILL.md",
@@ -82,12 +107,13 @@
         "note": "adapted from recorded route-confusion between neighboring skills; this case judges the rewritten description only, triggering is not observed yet"
       },
       "assertions": [
+        "The answer predicts trigger behavior for every request listed in requests.md, one entry per request",
+        "The six migration-planning requests are marked as not triggering sql-reviewer",
+        "The request asking to write a new REST API from scratch is marked as not triggering",
         "The revised description is a single YAML string without angle brackets and within 1024 characters",
-        "The revised description states the job and the trigger conditions, and does not summarize the body's steps",
-        "The revised description excludes the migration-planning requests that the neighboring skill owns",
-        "The revised description uses the words that appear in the real requests, including the non-English ones",
-        "Every capability named in the revised description exists in the skill body, or is removed from the description",
-        "The answer reports whether trigger behavior was tested in a harness or only reviewed as text"
+        "The revised description states the job and the trigger conditions, and does not summarize the body steps",
+        "The revised description excludes migration planning, which the neighboring skill owns",
+        "The answer states whether the predictions were tested in a harness or only inferred from the description"
       ]
     },
     {
@@ -95,14 +121,14 @@
       "kind": "task",
       "weight": 1,
       "holdout": true,
-      "prompt": "这些是我攒的代码评审调研笔记（evals/files/source-notes.md）。我们团队每天要 review 几十个 PR，很多意见作者根本不改。帮我做成一个能用的 skill，让人真的能改得动作者。",
-      "expected_output": "A review skill whose instructions encode the notes' decision cues and conditions, route the detail to a reference, and define an output contract that makes a comment actionable.",
+      "prompt": "这份研究笔记（evals/files/research-to-runtime/source.md）我攒了一阵子，讲的都是运行时指令该怎么写才不产生歧义。帮我把它变成能用的东西：我要的是以后写 skill 时真的按它执行，不是再读一遍研究。",
+      "expected_output": "Runtime instructions that make the research operational: the conditions it distinguishes become decision cues and rules the agent applies, with the trade-offs preserved and the long material routed to a reference.",
       "files": [
-        "evals/files/source-notes.md"
+        "evals/files/research-to-runtime/source.md"
       ],
       "source": {
-        "kind": "synthetic",
-        "note": "source notes and prompt fabricated; the failure pattern (research text not converted into runtime decisions) is real but this case is not anchored"
+        "kind": "derived",
+        "note": "source.md is a real research document from this repository; the request is the recurring task of turning research into runtime instructions"
       },
       "assertions": [
         "The skill contains decision cues or checks that change what the agent comments on, not a summary of the notes",
@@ -132,6 +158,64 @@
         "The answer states which checks were run and which were not, and does not claim the change improves behavior without a with-skill and without-skill comparison",
         "The answer does not drop verification silently, and does not force a full benchmark for the wording-only edits",
         "The revised skill keeps the commit-message path working while adding the PR-description path"
+      ]
+    },
+    {
+      "id": "audit-eval-set",
+      "kind": "task",
+      "weight": 1,
+      "holdout": true,
+      "prompt": "这套 eval 和刚跑出来的一轮结果都在 evals/files/eval-audit/ 里（用例文件、benchmark.json、两份 grading.json）。你看看这套东西靠不靠谱，能不能说明这个 skill 有用。",
+      "expected_output": "An audit that refuses the reported gain, names the specific instrument failures (one case, a synthetic case, assertions that pass in both configurations, a cost reported as zero), gives per-case verdicts, and states the smallest change that would make the intended claim valid.",
+      "files": [
+        "evals/files/eval-audit/evals.json",
+        "evals/files/eval-audit/run/benchmark.json",
+        "evals/files/eval-audit/run/grading-with-skill.json",
+        "evals/files/eval-audit/run/grading-without-skill.json"
+      ],
+      "source": {
+        "kind": "real",
+        "note": "case file, report and gradings are this repository's actual iteration-1 artifacts from 2026-10-22; the request mirrors the real review question asked that day"
+      },
+      "assertions": [
+        "The answer states, before discussing the numbers, that the report cannot support a claim that the skill improves output, and gives the reason",
+        "The answer notes that only one case was run and that the case is marked synthetic, so it cannot support a necessity or quality claim",
+        "The answer names the assertions that pass in both configurations and treats them as non-discriminating",
+        "The answer says the reported token count of zero means cost was not collected, not that the run was free",
+        "The answer gives a verdict per case and states the smallest change that would make the intended claim valid"
+      ]
+    },
+    {
+      "id": "refactor-messy-skill",
+      "kind": "task",
+      "weight": 1,
+      "holdout": false,
+      "prompt": "严格按照 skill 标准，彻底重构这个 skill 的 SKILL.md 和 references（evals/files/messy-skill/）。它的文件体系有冗余，不少文件不是任务必须的，是设计历史遗留。",
+      "expected_output": "A refactor that removes history and unused files, gives every remaining file a role, restates the main path with input, decision, output and stopping condition, and says what behavior it preserved or dropped.",
+      "files": [
+        "evals/files/messy-skill/SKILL.md",
+        "evals/files/messy-skill/references/quality.md",
+        "evals/files/messy-skill/references/template.html",
+        "evals/files/messy-skill/docs/scoring-history.md",
+        "evals/files/messy-skill/docs/faq.md",
+        "evals/files/messy-skill/docs/templates-notes.md",
+        "evals/files/messy-skill/docs/templates/board-2024.html",
+        "evals/files/messy-skill/scripts/render.py",
+        "evals/files/messy-skill/scripts/legacy_excel.py",
+        "evals/files/messy-skill/scripts/normalize.py"
+      ],
+      "source": {
+        "kind": "real",
+        "note": "request wording and complaint come from this project's sessions on 2026-10-19 and 2026-10-20 (refactor a skill, redundant design-history files); the fixture skill is rebuilt to match that complaint"
+      },
+      "assertions": [
+        "The answer states which files it removes, merges, or keeps, with a reason for each, before or alongside the rewrite",
+        "SKILL.md no longer contains version history, migration notes, or scoring history",
+        "Every file remaining in the skill has a stated role, and no remaining file is unreferenced",
+        "The main path states the input, the judging or ordering decision, the output shape, and the stopping condition",
+        "Behavior the old skill delivered is preserved or its removal is stated: rendering through scripts/render.py and the quality checklist",
+        "The duplicate artifacts are resolved: the two template copies and the unused legacy script are either dropped or given a single authoritative path",
+        "The answer states which checks were run and which were not"
       ]
     }
   ]

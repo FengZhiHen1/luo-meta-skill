@@ -1,0 +1,48 @@
+{
+  "assertions": [
+    {
+      "text": "A SKILL.md exists with YAML frontmatter that has non-empty name and description",
+      "passed": true,
+      "evidence": "outputs/weekly-incident-review-mail/SKILL.md 第 1-4 行：`name: weekly-incident-review-mail` 与 `description: 把一周的线上事故整理成给管理层的事故复盘周报邮件。当用户要「汇总本周线上事故 / 写事故周报 / 出复盘邮件 / 周五大盘 / incident review mail」时使用；…`，两字段均非空（该文件共 119 行，SKILL.md 位于 skill 目录根）。"
+    },
+    {
+      "text": "The description states the job and the conditions that trigger it, and does not summarize the steps of the workflow",
+      "passed": false,
+      "evidence": "职责与触发条件部分成立（「当用户要「汇总本周线上事故 / 写事故周报 / 出复盘邮件 / 周五大盘 / incident review mail」时使用」），但 description 直接复述了工作流步骤序列：「流程为：从 Jira 导出本周事故 CSV → 按严重度 S1-S4 分级 → 逐条写影响范围/根因/后续动作 → 按影响面评分排序 → 用质量门禁校验后发信。」这正面违反本断言「不 summary 步骤」的条件，属部分合规即失败。"
+    },
+    {
+      "text": "The body gives the agent a main path it can execute: the input, the ordering decision, the output shape, and the stopping condition",
+      "passed": true,
+      "evidence": "SKILL.md「流程」5 步齐备：输入=「输入：先确认三件事」+ 第 1 步 JQL（`project in (A, B) AND type = Incident AND created >= startOfWeek() …`）与「导出成 UTF-8 CSV，列名不用改（脚本中英文别名都认）」；排序决策=第 3 步「按分数从高到低处理」+「硬规则 2：明细顺序必须是影响面评分降序」+ 第 2 步「影响面评分（构成会打印出来，可审计）→ 降序排序」，并给 `--overrides` 人工改判路径；输出形态=第 2 步「`reports/2026-W43/weekly-report-2026-W43.md` … `normalized-2026-W43.json`」+ 第 5 步邮件主题/正文顺序；停止条件=第 4 步「ERROR 必须清零才能发信」+ 第 5 步组邮件发出。所引 8 个内部路径（scripts/2、references/4、assets/2）全部存在。"
+    },
+    {
+      "text": "No iteration log, source history, or maintenance rationale appears in SKILL.md",
+      "passed": true,
+      "evidence": "SKILL.md 119 行全部为运行指令（何时用/输入/流程 5 步/硬规则/文件说明/首次使用先冒烟/常见坑）；对「迭代」「上一版」「历史」「维护」「设计」「最初」「已验证」检索无命中，「常见坑」为操作告警（如「Jira 里 `P0/P1` 和 `S1/S2` 混着来很常见，映射表在 references/severity-and-impact.md」），不含开发过程或版本纪事。"
+    },
+    {
+      "text": "The answer states which checks were run and which remain untested, and does not claim a completed run that did not happen",
+      "passed": true,
+      "evidence": "outputs/run-notes.md「验证」列已跑项（中英文表头各跑一遍、空优先级→S?、字段错列告警、`--overrides` 改判「PROJ-1064 从第 2 升到第 1」、`--prev` 环比、冒烟命令跑通），「未解决 / 需要用户确认」列未验证项（「Jira 实际字段名未知…首次真跑要核对一遍『待确认项』输出」「权重是经验值…未用真实历史数据校准」）。声明可核：临时副本复跑 `node scripts/build_report.mjs --in assets/sample-jira-export.csv --week 2026-W43 --out out/smoke` 退出码 0、8 条且第 1 条为 `PROJ-1042 支付下单接口大面积超时`；`node scripts/check_report.mjs` 退出码 1 且恰好 17 条 ERROR；加 `--overrides assets/overrides.example.json` 后 PROJ-1064 升到第 1。未见虚构运行。"
+    },
+    {
+      "text": "Concrete test cases with prompts and observable success criteria are produced or proposed for this skill",
+      "passed": false,
+      "evidence": "输出树中没有 tests/ 或 evals/ 目录（仅 SKILL.md、references/4、scripts/2、assets/2）。最接近的只有 SKILL.md「首次使用先冒烟」的一条命令与判据（「能排出 8 条且第 1 条是 `PROJ-1042 支付下单接口大面积超时`，说明环境正常」），那是脚本冒烟，不含触发 prompt，也不检验 skill 行为（不测「单次事故复盘」「纯值班交接」这类应不触发的输入）。run-notes.md 未提出任何带 prompt 的用例集，只有「建议用最近 8-10 周数据回测一次排序是否符合管理层直觉」这类校准建议，无逐案成功判据。"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 2,
+    "total": 6,
+    "pass_rate": 0.67
+  },
+  "assertion_feedback": [
+    "断言 2 失败：description 里那句「流程为：从 Jira 导出本周事故 CSV → 按严重度 S1-S4 分级 → 逐条写影响范围/根因/后续动作 → 按影响面评分排序 → 用质量门禁校验后发信」是典型的步骤摘要，会让 agent 以为照描述即可跳过正文；删掉这句，只留「做什么 + 何时触发 + 不用于什么」即可。",
+    "断言 6 失败：脚本有冒烟数据和一条冒烟判据，但缺带 prompt 的行为用例（正例：有 Jira 导出 / 无导出只有聊天记录 / 空周；负例：单次事故 RCA、值班交接）。每条给 prompt + 期望是否触发 + 产出里可核对的字段即可。",
+    "断言 1、4 对明显不合格的输出也会通过：1 只查 name/description 非空；4 只查「没有历史纪事」这种缺席条件，正文写得再不可执行也能过。",
+    "断言 3 判定通过，但需注意其判据是「四要素在正文可见」；该 skill 确实给出 JQL、脚本命令、产物路径与「ERROR 清零才能发信」的停止条件，且 8 个引用文件均存在，属实质满足而非表面合规。",
+    "断言 5 判定通过：已跑/未确认两栏分明，我复现了其中三项声明（冒烟顺序、17 条 ERROR 退出码 1、overrides 后 PROJ-1064 升首位），未发现虚构运行。",
+    "无断言覆盖但重要的结果：SKILL.md 未处理「本周无事故」这一必然发生的分支（全文无「无事故 / 0 起」路径），脚本是否对空输入给出可用草稿也未在正文说明；另外影响面用 7 维加权总分排序，与用户口述的「按影响面排序」口径存在解释差（是否算偏离流程，无断言评判）。"
+  ]
+}

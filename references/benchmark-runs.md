@@ -48,6 +48,8 @@ Execute this task.
 
 Withhold the expected output, the assertions, the case file, the skill's design documents, and this conversation. Give no hint about the method or the desired result.
 
+Record what the harness injected into every configuration on its own: system prompt, project instruction files, available tools. Shared context is a known confound, not a leak. Do not make one side cleaner than the other to hide it; note it in `run-notes.md` and in the report.
+
 ## Capture
 
 | Artifact | Content |

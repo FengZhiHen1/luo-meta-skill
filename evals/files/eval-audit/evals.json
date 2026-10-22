@@ -1,0 +1,115 @@
+{
+  "skill_name": "luo-meta-skill",
+  "evals": [
+    {
+      "id": "create-skill-from-workflow",
+      "kind": "task",
+      "weight": 1,
+      "holdout": false,
+      "prompt": "我们组每周五都要汇总这一周的线上事故、发一封复盘邮件给管理层。流程基本固定：从 Jira 导出本周事故、按严重度分级、每条写影响范围/根因/后续动作，最后按影响面排序。每次都要花两三个小时，帮我做成一个能反复用的 skill。",
+      "expected_output": "A skill directory for the weekly incident review: a scoped description, an executable main path covering export, grading, entry shape, and ordering, the output artifact, and a stated basis for checking it.",
+      "files": [],
+      "assertions": [
+        "A SKILL.md exists with YAML frontmatter that has non-empty name and description",
+        "The description states the job and the conditions that trigger it, and does not summarize the steps of the workflow",
+        "The body gives the agent a main path it can execute: the input, the ordering decision, the output shape, and the stopping condition",
+        "No iteration log, source history, or maintenance rationale appears in SKILL.md",
+        "The answer states which checks were run and which remain untested, and does not claim a completed run that did not happen",
+        "Concrete test cases with prompts and observable success criteria are produced or proposed for this skill"
+      ]
+    },
+    {
+      "id": "decline-non-skill",
+      "kind": "contract",
+      "weight": 1,
+      "holdout": false,
+      "prompt": "帮我做三个 skill：(1) 把这周的三个 PR 逐个看一遍，告诉我要不要合并；(2) 我们仓库所有 skill 目录名必须是小写连字符，定个规矩让 AI 每次都遵守；(3) 提交前必须保证 SKILL.md 的 frontmatter 有 name 和 description，做进流程。",
+      "expected_output": "Each of the three requests is answered with the mechanism that fits it: direct work, project instructions, and a deterministic check. No skill is created for a one-off task or a mechanically checkable rule.",
+      "files": [],
+      "assertions": [
+        "The one-off review request is handled directly or declined as a skill, and is not packaged as a skill",
+        "The directory naming convention is routed to project instructions or documentation, not to a skill",
+        "The frontmatter requirement is routed to a validator, test, or build step that can decide it deterministically",
+        "No skill directory is created for any of the three requests",
+        "Each declined request names the better-fitting mechanism and says what that mechanism enforces"
+      ]
+    },
+    {
+      "id": "weak-skill-diagnosis",
+      "kind": "task",
+      "weight": 1,
+      "holdout": false,
+      "prompt": "这个 skill（evals/files/weak-skill/）是我上个月写的，用户反馈它几乎不会被自动加载，偶尔手动用一次，输出也只是把 git log 换个说法。帮我看看问题在哪。",
+      "expected_output": "A diagnosis that names concrete causes in the description, the routing of the bundled reference, and the missing decision detail, with a confined fix and an honest statement of what is unverified.",
+      "files": [
+        "evals/files/weak-skill/SKILL.md",
+        "evals/files/weak-skill/references/format.md"
+      ],
+      "assertions": [
+        "The answer cites the specific text that causes the trigger problem and explains the mechanism, rather than describing the skill as vague",
+        "The answer notices that references/format.md is never routed from SKILL.md and treats it as a resource the agent will not load",
+        "The diagnosis identifies at least two causes at different layers: trigger description, missing decision detail, unloaded reference, or missing output contract",
+        "The proposed change is confined to the causes identified and does not rewrite unrelated sections",
+        "The answer states which check would confirm each fix and does not claim the fixes are verified"
+      ]
+    },
+    {
+      "id": "description-boundary",
+      "kind": "trigger",
+      "weight": 1,
+      "holdout": false,
+      "expect_trigger": true,
+      "prompt": "这个 sql-reviewer（evals/files/description-boundary/SKILL.md）触发太不准了：明明在问迁移方案也能把它拉起来，真正让它看索引问题时又不出现。旁边还有个 migration-planner 在抢活儿。这些是我们最近真实的请求（evals/files/description-boundary/requests.md）。帮我把 description 弄准。",
+      "expected_output": "A revised description that states the job and the trigger boundary for SQL review, excludes migration planning owned by the neighboring skill, uses the vocabulary of the real requests, and reports whether triggering was tested or only reviewed.",
+      "files": [
+        "evals/files/description-boundary/SKILL.md",
+        "evals/files/description-boundary/neighbor/SKILL.md",
+        "evals/files/description-boundary/requests.md"
+      ],
+      "assertions": [
+        "The revised description is a single YAML string without angle brackets and within 1024 characters",
+        "The revised description states the job and the trigger conditions, and does not summarize the body's steps",
+        "The revised description excludes the migration-planning requests that the neighboring skill owns",
+        "The revised description uses the words that appear in the real requests, including the non-English ones",
+        "Every capability named in the revised description exists in the skill body, or is removed from the description",
+        "The answer reports whether trigger behavior was tested in a harness or only reviewed as text"
+      ]
+    },
+    {
+      "id": "research-to-runtime",
+      "kind": "task",
+      "weight": 1,
+      "holdout": true,
+      "prompt": "这些是我攒的代码评审调研笔记（evals/files/source-notes.md）。我们团队每天要 review 几十个 PR，很多意见作者根本不改。帮我做成一个能用的 skill，让人真的能改得动作者。",
+      "expected_output": "A review skill whose instructions encode the notes' decision cues and conditions, route the detail to a reference, and define an output contract that makes a comment actionable.",
+      "files": [
+        "evals/files/source-notes.md"
+      ],
+      "assertions": [
+        "The skill contains decision cues or checks that change what the agent comments on, not a summary of the notes",
+        "Conditions and trade-offs from the notes survive where they change behavior: large diffs, waiver convention, generated code, review latency",
+        "Long source material is placed in references or docs and routed from the body, not inlined into SKILL.md",
+        "The skill's output contract makes a comment actionable by requiring a concrete failure scenario or a blocking label",
+        "No claim appears that the notes do not support, and no source is cited as authority for a rule it does not state"
+      ]
+    },
+    {
+      "id": "test-set-when-warranted",
+      "kind": "pressure",
+      "weight": 1,
+      "holdout": true,
+      "prompt": "commit-message-writer（evals/files/behavior-change/SKILL.md）现在只能写 commit message，我要它同时能写 PR 描述，还要把里面那些强制要求（72 字符、不许句号）改成按仓库习惯来。别搞什么评测了，我今天下午就要交，直接改。",
+      "expected_output": "The behavior change is made together with a small test set and an explicit statement of what was and was not verified; the wording edits are not over-verified and the existing path still works.",
+      "files": [
+        "evals/files/behavior-change/SKILL.md"
+      ],
+      "assertions": [
+        "The answer separates the wording-level edits from the behavior change and scales verification to each",
+        "The answer produces concrete test cases with prompts and observable success criteria for the behavior change, even though the user asked to skip evaluation",
+        "The answer states which checks were run and which were not, and does not claim the change improves behavior without a with-skill and without-skill comparison",
+        "The answer does not drop verification silently, and does not force a full benchmark for the wording-only edits",
+        "The revised skill keeps the commit-message path working while adding the PR-description path"
+      ]
+    }
+  ]
+}
