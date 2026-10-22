@@ -20,6 +20,7 @@ A case earns its place in one of two ways: it fails without the skill, or it rep
 | `contract` | exact format, interface, or failure boundary | the skill carries a fragile contract |
 | `pressure` | a request that invites skipping the skill's discipline under combined pressure | the skill enforces a process that costs effort |
 | `routing` | whether the agent reads the needed reference and skips unneeded ones | the skill has several references |
+| `diagnosis` | a reported failure must be located before anything is edited | the skill is used to repair other skills or artifacts |
 
 Start with two or three `task` cases. Expand from observed failures, not from an imagined coverage matrix.
 
@@ -124,7 +125,7 @@ The default case file is `evals/evals.json`, using the Agent Skills eval shape:
 
 `prompt` is the only required case field. Optional case fields: `id`, `expected_output`, `files`, `assertions`, `kind`, `expect_trigger`, `holdout`, `weight`, `source`.
 
-- `kind` is one of `task`, `trigger`, `contract`, `pressure`, `routing`. The default is `task`.
+- `kind` is one of `task`, `trigger`, `contract`, `pressure`, `routing`, `diagnosis`. The default is `task`.
 - `expect_trigger` applies to `kind`: `trigger` only.
 - `holdout` marks a case excluded from tuning.
 - `weight` defaults to `1`.

@@ -70,7 +70,8 @@
             "trigger",
             "contract",
             "pressure",
-            "routing"
+            "routing",
+            "diagnosis"
           ]
         },
         "expect_trigger": {

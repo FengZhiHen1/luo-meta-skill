@@ -14,6 +14,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import sys
 from datetime import datetime, timezone
@@ -148,9 +149,13 @@ def main(argv):
     errors = []
 
     case_meta = {}
+    case_file_label = "not supplied"
     if args.case_file:
         case_path = Path(args.case_file).resolve()
         if case_path.exists():
+            case_file_label = (
+                str(case_path) + " sha256:" + hashlib.sha256(case_path.read_bytes()).hexdigest()[:12]
+            )
             data = load_json(case_path)
             for case in data.get("evals", []):
                 key = str(case.get("id") or case.get("prompt", ""))[:120]
@@ -188,7 +193,14 @@ def main(argv):
         if with_skill and baseline:
             entry["delta"] = round(with_skill["pass_rate"] - runs[baseline]["pass_rate"], 3)
             entry["baseline"] = baseline
-            entry["discriminating"] = entry["delta"] > 0
+            base_failed = {
+                item["text"] for item in runs[baseline].get("assertions", []) if item["passed"] is not True
+            }
+            with_passed = {
+                item["text"] for item in with_skill.get("assertions", []) if item["passed"] is True
+            }
+            entry["discriminating_assertions"] = sorted(base_failed & with_passed)
+            entry["discriminating"] = len(entry["discriminating_assertions"]) > 0
             shared = {item["text"] for item in with_skill.get("assertions", [])} & {
                 item["text"] for item in runs[baseline].get("assertions", [])
             }
@@ -223,13 +235,19 @@ def main(argv):
         if case.get("baseline") and case["configurations"][case["baseline"]]["pass_rate"] >= 1.0
     ]
 
-    def totals(name):
-        tokens = sum(case["configurations"].get(name, {}).get("tokens", 0) for case in comparable)
-        duration = sum(case["configurations"].get(name, {}).get("duration_ms", 0) for case in comparable)
-        return tokens, duration
+    def totals(name, key):
+        values = [case["configurations"].get(name, {}).get(key) for case in comparable]
+        known = [value for value in values if isinstance(value, (int, float))]
+        return sum(known) if known else None
 
-    with_tokens, with_duration = totals(WITH_SKILL)
-    base_tokens, base_duration = totals(baseline_name) if baseline_name else (0, 0)
+    with_tokens = totals(WITH_SKILL, "tokens")
+    with_duration = totals(WITH_SKILL, "duration_ms")
+    base_tokens = totals(baseline_name, "tokens") if baseline_name else None
+    base_duration = totals(baseline_name, "duration_ms") if baseline_name else None
+
+    def drop_missing(entry):
+        """Keep unreported cost out of the report instead of reporting a fabricated zero."""
+        return {key: value for key, value in entry.items() if value is not None}
 
     benchmark = {
         "metadata": {
@@ -237,24 +255,25 @@ def main(argv):
             "iteration": iteration.name,
             "configurations": sorted(configurations),
             "cases": len(cases),
+            "case_file": case_file_label,
             "generated_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
         },
         "cases": cases,
         "summary": {
-            "with_skill": {
+            "with_skill": drop_missing({
                 "configuration": WITH_SKILL,
                 "cases": with_count,
                 "pass_rate": with_rate,
                 "tokens": with_tokens,
                 "duration_ms": with_duration,
-            },
-            "baseline": {
+            }),
+            "baseline": drop_missing({
                 "configuration": baseline_name or "none",
                 "cases": baseline_count,
                 "pass_rate": baseline_rate,
                 "tokens": base_tokens,
                 "duration_ms": base_duration,
-            },
+            }),
             "delta": round(with_rate - baseline_rate, 3),
             "non_discriminating_cases": non_discriminating,
             "weak_assertions": weak,
@@ -270,15 +289,24 @@ def main(argv):
         json.dumps(benchmark, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
     )
 
+    def show(value):
+        return "not reported" if value is None else str(value)
+
     lines = [
         "# Benchmark: " + args.skill_name + " (" + iteration.name + ")",
+        "",
+        "Evidence strength: " + str(len(cases)) + " case(s), one run per configuration unless repeated. "
+        + "Read this table against the conclusion rules in eval-audit.md; a delta from one or two cases "
+        + "is an observation, not a gain.",
+        "",
+        "Case file at aggregation time: " + case_file_label,
         "",
         "| Configuration | Cases | Pass rate | Tokens | Duration (ms) |",
         "| --- | --- | --- | --- | --- |",
         "| " + WITH_SKILL + " | " + str(with_count) + " | " + str(with_rate) + " | "
-        + str(with_tokens) + " | " + str(with_duration) + " |",
+        + show(with_tokens) + " | " + show(with_duration) + " |",
         "| " + (baseline_name or "baseline missing") + " | " + str(baseline_count) + " | "
-        + str(baseline_rate) + " | " + str(base_tokens) + " | " + str(base_duration) + " |",
+        + str(baseline_rate) + " | " + show(base_tokens) + " | " + show(base_duration) + " |",
         "",
         "Delta: " + str(benchmark["summary"]["delta"]),
         "",
@@ -294,6 +322,11 @@ def main(argv):
         )
     if non_discriminating:
         lines += ["", "Cases that pass without the skill: " + ", ".join(non_discriminating)]
+    for case in cases:
+        passing = case.get("discriminating_assertions") or []
+        lines += ["", case["eval_id"] + " — assertions that separate the configurations: "
+                  + (str(len(passing)) if passing else "none")]
+        lines += ["  - " + text for text in passing]
     if weak:
         lines += ["", "Assertions that pass in every configuration:"]
         lines += ["- " + item["eval_id"] + ": " + item["text"] for item in weak]

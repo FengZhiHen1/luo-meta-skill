@@ -44,7 +44,7 @@
     },
     {
       "id": "weak-skill-diagnosis",
-      "kind": "task",
+      "kind": "diagnosis",
       "weight": 1,
       "holdout": false,
       "prompt": "这个 skill（evals/files/weak-skill/）是我上个月写的，用户反馈它几乎不会被自动加载，偶尔手动用一次，输出也只是把 git log 换个说法。帮我看看问题在哪。",
@@ -67,10 +67,9 @@
     },
     {
       "id": "description-boundary",
-      "kind": "trigger",
+      "kind": "task",
       "weight": 1,
       "holdout": false,
-      "expect_trigger": true,
       "prompt": "这个 sql-reviewer（evals/files/description-boundary/SKILL.md）触发太不准了：明明在问迁移方案也能把它拉起来，真正让它看索引问题时又不出现。旁边还有个 migration-planner 在抢活儿。这些是我们最近真实的请求（evals/files/description-boundary/requests.md）。帮我把 description 弄准。",
       "expected_output": "A revised description that states the job and the trigger boundary for SQL review, excludes migration planning owned by the neighboring skill, uses the vocabulary of the real requests, and reports whether triggering was tested or only reviewed.",
       "files": [
@@ -80,7 +79,7 @@
       ],
       "source": {
         "kind": "derived",
-        "note": "adapted from recorded route-confusion cases between neighboring skills; skill names and requests rewritten for the fixture"
+        "note": "adapted from recorded route-confusion between neighboring skills; this case judges the rewritten description only, triggering is not observed yet"
       },
       "assertions": [
         "The revised description is a single YAML string without angle brackets and within 1024 characters",

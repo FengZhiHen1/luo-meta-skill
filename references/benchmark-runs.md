@@ -43,7 +43,7 @@ Execute this task.
 - Task: <case prompt>
 - Input files: <fixture paths, or "none">
 - Save produced files to: <run directory>/outputs/
-- Save run-notes.md next to outputs/: which files you read, the main decisions, and anything unresolved.
+- Save run-notes.md outside outputs/ (in the run directory): which files you read, the main decisions, and anything unresolved.
 ```
 
 Withhold the expected output, the assertions, the case file, the skill's design documents, and this conversation. Give no hint about the method or the desired result.
