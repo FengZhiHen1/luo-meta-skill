@@ -23,15 +23,15 @@
       "kind": "contract",
       "weight": 1,
       "holdout": false,
-      "prompt": "帮我做三个 skill：(1) 把这周的三个 PR 逐个看一遍，告诉我要不要合并；(2) 我们仓库所有 skill 目录名必须是小写连字符，定个规矩让 AI 每次都遵守；(3) 提交前必须保证 SKILL.md 的 frontmatter 有 name 和 description，做进流程。",
-      "expected_output": "Each of the three requests is answered with the mechanism that fits it: direct work, project instructions, and a deterministic check. No skill is created for a one-off task or a mechanically checkable rule.",
+      "prompt": "我们仓库对 skill 有两条硬性要求：目录名必须小写并用连字符，SKILL.md 的 frontmatter 必须有 name 和 description。现在这两条老是有人漏，帮我做个 skill，让 AI 每次新增或改 skill 时都按这两条来。",
+      "expected_output": "One realistic request, answered by routing each requirement to the mechanism that enforces it, not by packaging a runtime skill: project instructions for the naming convention, a validator or test for the frontmatter field.",
       "files": [],
       "assertions": [
-        "The one-off review request is handled directly or declined as a skill, and is not packaged as a skill",
-        "The directory naming convention is routed to project instructions or documentation, not to a skill",
-        "The frontmatter requirement is routed to a validator, test, or build step that can decide it deterministically",
-        "No skill directory is created for any of the three requests",
-        "Each declined request names the better-fitting mechanism and says what that mechanism enforces"
+        "The answer does not build a runtime skill for these two requirements, or it states up front why a skill is the wrong mechanism before producing anything",
+        "The naming convention is routed to project instructions or documentation that the agent reads while editing skills, not to a skill body",
+        "The frontmatter requirement is routed to a validator, test, or build step that fails when the field is missing",
+        "No skill directory or SKILL.md is created in the answer",
+        "Each mechanism is named with what it enforces and why it holds where a runtime skill would not"
       ]
     },
     {
