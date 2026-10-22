@@ -1,6 +1,6 @@
 ---
 name: luo-meta-skill
-description: Design, create, refactor, and improve reusable Agent Skills. Use when developing a new SKILL.md, researching domain expertise for a skill, planning a skill specification or runtime references, diagnosing weak or mis-triggered skill behavior, optimizing a skill description, or reviewing an existing skill. Also use for requests to create, rewrite, optimize, or evaluate Agent Skills. Do not use to execute an existing skill, perform a one-off task, or edit ordinary project documentation.
+description: Design, create, refactor, improve, and measure reusable Agent Skills. Use when developing a new SKILL.md, researching domain expertise for a skill, planning a skill specification or runtime references, diagnosing weak or mis-triggered skill behavior, optimizing a skill description, building a skill test set, or running with-skill and without-skill comparisons to show that a skill is necessary and good. Also use for requests to create, rewrite, optimize, benchmark, or evaluate Agent Skills. Do not use to execute an existing skill, perform a one-off task, or edit ordinary project documentation.
 ---
 
 # Luo Meta Skill
@@ -42,6 +42,8 @@ Read a reference only when the work requires it. Do not load all references by d
 | Writing or modifying `SKILL.md`, `description`, or operating rules | [instruction-craft.md](references/instruction-craft.md) | A pure path or link fix |
 | Designing or reviewing reference routing | [reference-routing.md](references/reference-routing.md) | The task does not touch routing |
 | Diagnosing failures, evaluating triggers or outputs, or comparing revisions | [iteration-and-evaluation.md](references/iteration-and-evaluation.md) | A new design with no observed failure |
+| Designing or revising test cases, or deciding what evidence would show that a skill works | [test-set-design.md](references/test-set-design.md) | A wording or path fix that needs no reusable evidence |
+| Running a test set through independent executors, grading outputs, or reporting measured results | [benchmark-runs.md](references/benchmark-runs.md) | The user needs a design review, or no fresh executor is available |
 
 A small fix may need no reference. Combine references when the work genuinely spans their concerns.
 
@@ -50,7 +52,7 @@ A small fix may need no reference. Combine references when the work genuinely sp
 - Use two research anchors: representative tasks and capability gaps, and systematic knowledge of the domain. The first sets priorities; the second exposes blind spots and mature methods that current failures do not reveal.
 - Convert high-value findings into what the agent will decide, do, or verify differently: decision cues, concrete steps, precise facts, contrasting examples, reusable mechanisms. Preserve conditions, trade-offs, and exceptions.
 - Maintain goals, scope, expected behavior, boundaries, implementation choices, and acceptance methods in the target skill project's `docs/`. Scale detail to complexity. Do not require `SPEC.md`, fixed sections, hash synchronization, or evidence dossiers.
-- Keep runtime content to what execution needs: `SKILL.md` for the main path and reference routing; `references/` for task-time knowledge; `scripts/` for deterministic, repeated, or fragile operations; `assets/` for templates and materials.
+- Keep runtime content to what execution needs: `SKILL.md` for the main path and reference routing; `references/` for task-time knowledge; `scripts/` for deterministic, repeated, or fragile operations; `assets/` for templates and materials; `evals/` for the test cases and fixtures that ship with the skill. Run results belong in a workspace outside the skill directory.
 - Add `schemas/` only when structured artifacts are consumed by code, tests, or a validator; keep one authoritative schema and derive code and tests from it. Do not create an empty schema directory.
 - `docs/` is not runtime context by default. Do not put maintenance rationale, source arguments, or iteration records into `SKILL.md`.
 - Use relative paths only, pointing to files inside this skill. Do not reference absolute paths, other repositories, or local machine locations.
@@ -88,7 +90,7 @@ See [instruction-craft.md](references/instruction-craft.md) for examples and bou
 
 - Small fix: check the affected text, paths, and reference targets.
 - Behavior change: use representative tasks and important boundaries that exercise the changed behavior. Inspect actual artifacts and execution traces. For trigger changes, test positive, negative, and neighboring cases in the target harness; a text review is not a trigger test.
-- When the result matters or the conclusion is uncertain: compare before and after, or compare with and without the skill. Keep a few examples out of tuning when needed.
+- When the result matters, the conclusion is uncertain, or the user asks for measured evidence: build or update the skill's test set ([test-set-design.md](references/test-set-design.md)) and run it in independent executors ([benchmark-runs.md](references/benchmark-runs.md)). Without a fresh executor, do not run the benchmark; deliver the test set and say what remains unmeasured.
 - Distinguish three states: structure checked, design reviewed, runtime behavior tested. Do not report a test that was not run as passed.
 - When behavior or design changes, update the affected `docs/`. A wording-only change does not require a new snapshot or a second authoritative explanation.
 - Deliver usable files and a concise explanation: major design choices, verification actually performed, and remaining material limitations. Unless the user asks, do not produce scorecards, evidence reports, or governance checklists.

@@ -1,0 +1,272 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:luo-meta-skill:results",
+  "title": "Benchmark run results",
+  "description": "Authoritative shapes for grading.json, timing.json, and benchmark.json. scripts/summarize_runs.py validates run results against these definitions.",
+  "$defs": {
+    "grading": {
+      "type": "object",
+      "required": [
+        "assertions",
+        "summary"
+      ],
+      "properties": {
+        "assertions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/graded_assertion"
+          }
+        },
+        "summary": {
+          "type": "object",
+          "required": [
+            "passed",
+            "failed",
+            "total",
+            "pass_rate"
+          ],
+          "properties": {
+            "passed": {
+              "type": "number",
+              "minimum": 0
+            },
+            "failed": {
+              "type": "number",
+              "minimum": 0
+            },
+            "total": {
+              "type": "number",
+              "minimum": 0
+            },
+            "pass_rate": {
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "additionalProperties": true
+        },
+        "execution_metrics": {
+          "type": "object"
+        },
+        "assertion_feedback": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "graded_assertion": {
+      "type": "object",
+      "required": [
+        "text",
+        "passed",
+        "evidence"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "passed": {
+          "type": "boolean"
+        },
+        "evidence": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": true
+    },
+    "timing": {
+      "type": "object",
+      "properties": {
+        "total_tokens": {
+          "type": "number",
+          "minimum": 0
+        },
+        "duration_ms": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": true
+    },
+    "benchmark": {
+      "type": "object",
+      "required": [
+        "metadata",
+        "cases",
+        "summary"
+      ],
+      "properties": {
+        "metadata": {
+          "type": "object",
+          "required": [
+            "skill_name",
+            "iteration",
+            "configurations"
+          ],
+          "properties": {
+            "skill_name": {
+              "type": "string",
+              "minLength": 1
+            },
+            "iteration": {
+              "type": "string",
+              "minLength": 1
+            },
+            "configurations": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "cases": {
+              "type": "number",
+              "minimum": 0
+            },
+            "generated_at": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "additionalProperties": true
+        },
+        "cases": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/benchmark_case"
+          }
+        },
+        "summary": {
+          "type": "object",
+          "required": [
+            "with_skill",
+            "baseline",
+            "delta"
+          ],
+          "properties": {
+            "with_skill": {
+              "$ref": "#/$defs/configuration_summary"
+            },
+            "baseline": {
+              "$ref": "#/$defs/configuration_summary"
+            },
+            "delta": {
+              "type": "number"
+            },
+            "non_discriminating_cases": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "weak_assertions": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/weak_assertion"
+              }
+            },
+            "missing_configurations": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "configuration_summary": {
+      "type": "object",
+      "required": [
+        "configuration",
+        "cases",
+        "pass_rate"
+      ],
+      "properties": {
+        "configuration": {
+          "type": "string",
+          "minLength": 1
+        },
+        "cases": {
+          "type": "number",
+          "minimum": 0
+        },
+        "pass_rate": {
+          "type": "number",
+          "minimum": 0
+        },
+        "tokens": {
+          "type": "number",
+          "minimum": 0
+        },
+        "duration_ms": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": true
+    },
+    "benchmark_case": {
+      "type": "object",
+      "required": [
+        "eval_id",
+        "configurations"
+      ],
+      "properties": {
+        "eval_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "type": "string",
+          "minLength": 1
+        },
+        "holdout": {
+          "type": "boolean"
+        },
+        "weight": {
+          "type": "number",
+          "minimum": 0
+        },
+        "configurations": {
+          "type": "object"
+        },
+        "delta": {
+          "type": "number"
+        },
+        "discriminating": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "weak_assertion": {
+      "type": "object",
+      "required": [
+        "eval_id",
+        "text"
+      ],
+      "properties": {
+        "eval_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}

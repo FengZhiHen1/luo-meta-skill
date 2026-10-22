@@ -2,6 +2,8 @@
 
 Read when improving a skill from usage evidence, measuring behavior, checking trigger quality, or comparing revisions.
 
+A one-off check can follow the rules below directly. When the same cases must be reused across versions, or a claim needs measured evidence, design them with [test-set-design.md](test-set-design.md) and run them with [benchmark-runs.md](benchmark-runs.md).
+
 ## Diagnose before changing text
 
 Collect as much as possible: the original request, available inputs, the skill and references actually selected, the execution trace, the final artifact, and user feedback. Separate observation from interpretation. Test cases designed from known requirements or boundaries are useful, but are not evidence of observed failures.

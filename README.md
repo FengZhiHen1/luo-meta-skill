@@ -22,6 +22,7 @@ Luo Meta Skill is a method for those decisions. It helps an agent decide whether
 - **Design the runtime.** Covers scope, `SKILL.md` body shape, reference routing with read-when and skip-when, scripts and assets, harness compatibility, and the main path.
 - **Write precise instructions.** Settles semantics first, matches constraint strength to behavior fragility, and treats the `description` as a routing contract.
 - **Verify proportionately.** Uses trigger cases, real artifacts, before/after comparison, and honest reporting of what was not tested.
+- **Measure whether the skill is worth it.** Builds a reusable test set, runs each case with and without the skill in fresh executors, grades the outputs, and reports the gain, the cost, and the cases that prove nothing.
 
 ## Quick start
 
@@ -30,7 +31,7 @@ Luo Meta Skill is a method for those decisions. It helps an agent decide whether
 A **harness** is the agent runtime that discovers, loads, and runs skills. Examples include Claude Code, Codex CLI, and DeepSeek Harness.
 
 - An Agent Skills-compatible harness that loads `SKILL.md` and can read relative Markdown references.
-- It needs no runtime dependencies, package manager, or API key. The skill has no scripts.
+- For benchmarks: a fresh executor (subagent, separate session, or child process) and Python 3 for the two optional scripts. Both use the standard library only; no package manager, dependency, or API key is needed.
 
 ### Install
 
@@ -76,7 +77,18 @@ luo-meta-skill/
 │   ├── skill-architecture.md
 │   ├── instruction-craft.md
 │   ├── reference-routing.md
-│   └── iteration-and-evaluation.md
+│   ├── iteration-and-evaluation.md
+│   ├── test-set-design.md
+│   └── benchmark-runs.md
+├── scripts/
+│   ├── check_evals.py
+│   └── summarize_runs.py
+├── schemas/
+│   ├── evals.schema.json
+│   └── results.schema.json
+├── evals/
+│   ├── evals.json
+│   └── files/
 ├── docs/
 │   └── skill-design.md
 ├── README.md
@@ -87,7 +99,7 @@ luo-meta-skill/
 └── LICENSE
 ~~~
 
-Runtime files: `SKILL.md` and `references/`. `docs/` records design intent and source trade-offs. The remaining files are repository metadata.
+Runtime files: `SKILL.md`, `references/`, and the optional `scripts/` used during benchmarking. `schemas/` defines the case file and result files that the scripts consume. `evals/` is the skill's own test set. `docs/` records design intent and source trade-offs. The remaining files are repository metadata.
 
 ## Design principles
 
@@ -97,7 +109,8 @@ Runtime files: `SKILL.md` and `references/`. `docs/` records design intent and s
 - **Schemas only when consumed.** A produced skill with structured artifacts gets one authoritative schema (for example, `schemas/`) only when code, tests, or a validator consume it; derive code and tests from it.
 - **Shapes are starting points.** Procedure, knowledge, tool, judgment, and creative shapes; adapt them to the task.
 - **Research with two anchors.** Representative tasks and capability gaps, plus systematic domain knowledge.
-- **Verification proportional to risk.** Text checks for wording, artifacts for behavior, trigger cases for routing.
+- **Verification proportional to risk.** Text checks for wording, artifacts for behavior, trigger cases for routing, a test set when a claim needs evidence.
+- **Measurement needs an independent executor.** A benchmark run by the author proves nothing; without a fresh executor the skill delivers the case set and names what is unmeasured.
 - **Harness-neutral by default.** No provider-specific mechanisms unless the target harness verifies them.
 - **English runtime, any language for target skills.** The skill's own guidance is English; a target skill follows its audience.
 
@@ -105,14 +118,15 @@ Runtime files: `SKILL.md` and `references/`. `docs/` records design intent and s
 
 Luo Meta Skill is designed for harnesses that implement the [Agent Skills specification](https://agentskills.io/specification): a `SKILL.md` with YAML frontmatter, progressive disclosure through `references/`, and relative paths.
 
-It uses no scripts, hooks, subagents, provider-specific frontmatter, or network access. Behavior depends on the harness's skill loader and model; runtime behavior has not been evaluated across all harnesses.
+It uses no hooks, provider-specific frontmatter, or network access. Benchmarking needs the harness to start a fresh agent, session, or process; the skill checks that capability and declines to run a benchmark without it. Behavior depends on the harness's skill loader and model; runtime behavior has not been evaluated across all harnesses.
 
 ## Status
 
 - `0.1.0`, early public release.
-- Text, structure, and reference checks are complete.
+- Text, structure, schema, and case-file checks are complete.
+- The skill ships its own test set; its first end-to-end run is pending.
 - Runtime behavior has not been evaluated across harnesses.
-- No CLI, evaluation platform, or governance system is included.
+- No CLI, evaluation platform, dashboard, or governance system is included.
 - Runtime guidance is in English. Target skills may be written in any language.
 
 ## Security

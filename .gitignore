@@ -4,3 +4,7 @@ Thumbs.db
 *.log
 .vscode/
 .idea/
+
+# Python bytecode from the optional scripts
+__pycache__/
+*.pyc

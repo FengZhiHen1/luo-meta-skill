@@ -9,7 +9,7 @@ Help an agent create, refactor, and improve reusable Agent Skills, with emphasis
 ## Non-goals
 
 - No unified CLI, Skill OS, platform compiler, or release governance system.
-- No mandatory evaluation platform, evidence ledger, scorecards, or review studio.
+- No mandatory evaluation platform, evidence ledger, scorecards, or review studio. Benchmarking is an on-demand capability, not a release gate; the skill ships no CI, no report service, and no baseline store.
 - Do not package one-off tasks, single-repository conventions, or deterministic rules as skills.
 - Do not copy any upstream project's directory structure or maintenance rituals.
 
@@ -24,6 +24,8 @@ Help an agent create, refactor, and improve reusable Agent Skills, with emphasis
 - Precise technical instructions: settle semantics first, then choose constraint strength by behavior fragility. Borrow ASD-STE100 clarity principles without claiming conformity. Apply them only to technical runtime instructions, not to creative output or source material.
 - Knowledge freshness and organization: keep durable guidance in the skill, refresh volatile facts, and organize runtime references by task rather than by source. The main path may rely on references when the entry point routes the agent to them before use.
 - Proportionate verification: choose checks by the changed behavior, risk, and uncertainty. Trigger checks apply to trigger changes; artifact, loading, execution, and contract checks apply to their respective changes. Distinguish designed test cases from observed failure evidence.
+- Test sets answer two questions: whether the skill is necessary, and whether this version is better. The necessity answer comes from running the same cases with no skill and with the skill; a case the bare agent already passes measures nothing.
+- Measurement requires an independent executor. A fresh agent, session, or process starts without the authoring history; without one, the skill delivers the case set and states what remains unmeasured instead of self-running it.
 - Harness neutrality: a harness is the agent runtime that discovers, loads, and runs skills. Verify platform mechanisms before relying on them; never assume availability from a file name.
 - Structured artifacts get one schema: keep field names, types, and value domains in one machine-readable schema (for example, `schemas/`) only when code, tests, or a validator consume it; derive code and tests from it.
 - Reference routing as a decision: every reference needs a read-when, plus a skip-when when over-reading is a risk; the default path should need no reference; a file index is not routing.
@@ -36,8 +38,16 @@ Help an agent create, refactor, and improve reusable Agent Skills, with emphasis
 - `references/instruction-craft.md`: semantics first, constraint strength, technical writing rules, trigger descriptions, revision strategy, precision check.
 - `references/reference-routing.md`: routing contract, formats, anti-patterns, routing tests.
 - `references/iteration-and-evaluation.md`: failure diagnosis, proportionate evaluation, trigger and output checks, honest reporting.
+- `references/test-set-design.md`: two-question framing, case families, prompt and fixture design, assertion discriminating test, trigger and pressure cases, holdout, default case format and foreign-format mapping.
+- `references/benchmark-runs.md`: executor preconditions, run layout, isolation rules, capture, repetitions, three grading layers, weak-assertion and necessity reading, reporting.
 
-The five references are routed by task and are not all loaded at startup. There are no scripts: current capability can be delivered with text instructions and existing tools, and scripts would add maintenance surface without demonstrated benefit. Add them when repeated, fragile, or deterministic needs appear.
+The seven references are routed by task and are not all loaded at startup.
+
+`scripts/check_evals.py` and `scripts/summarize_runs.py` exist because both tasks are deterministic and repeated: validating a case file against `schemas/evals.schema.json`, and aggregating run results into `benchmark.json` and `benchmark.md`. Both use the Python standard library only, so no dependency changes. Grading stays with an agent and a written rule set; it is judgment, not a script.
+
+`schemas/evals.schema.json` and `schemas/results.schema.json` are the single authoritative definition of the case file and the run result files. The scripts read the schemas instead of restating field rules.
+
+`evals/` holds this skill's own test set and fixtures. It ships with the skill because it is part of the product: it is how a change to this skill can be shown to help or to hurt. Run results stay outside the skill directory.
 
 ## Source trade-offs
 
@@ -45,10 +55,11 @@ The five references are routed by task and are not all loaded at startup. There 
 | --- | --- | --- |
 | Sentry skill-writer | Source research, source adaptation, on-demand references, precision checks, no-first-person description rules | Mandatory SPEC, fixed coverage matrix, registration process |
 | OpenAI skill-creator | Runtime economy, matching freedom to task fragility, resource responsibilities, description as the only trigger surface | Harness-specific initialization and UI metadata |
-| Anthropic skill-creator | Real artifact feedback, trigger checks, optional comparative evaluation | Mandatory full evaluation pipeline, specific tool calls |
+| Anthropic skill-creator | Real artifact feedback, trigger checks, with-skill and without-skill runs in fresh executors, evidence-citing grading, blind comparison for subjective quality, assertion critique | Mandatory full evaluation pipeline, dedicated viewer and script suite, required subagents |
 | Superpowers writing-skills | Use failure scenarios and pressure tests to expose instruction gaps, workflow summaries in descriptions can displace the body | The absolute requirement to write a failing test before every change |
-| Yao Meta Skill | Non-skill decisions, nearby triggers, portability awareness, trigger-first authoring, conditional exclusions, shorter-wins | Skill OS, unified IR, release gates, governance |
-| Agent Skills specification | Minimum metadata, progressive disclosure, on-demand references | Treating recommended practices as mechanisms every harness supports |
+| Yao Meta Skill | Non-skill decisions, nearby triggers, portability awareness, trigger-first authoring, conditional exclusions, shorter-wins, separate answer key for blind review, missing evidence stays missing, holdout rotation | Skill OS, unified IR, release gates, governance, execution-evidence ledger |
+| Skillet | One case per known failure mode, fixtures that reproduce the failure | Spec-first authoring flow |
+| Agent Skills specification | Minimum metadata, progressive disclosure, on-demand references, the `evals/evals.json` case shape | Treating recommended practices as mechanisms every harness supports |
 | ASD-STE100 | Consistent terms, explicit actions, conditions, low-ambiguity expression | Controlled dictionary, certification claims, uniform sentence length |
 
 This is an independent synthesis of methods. It does not copy protected upstream text.
@@ -80,4 +91,4 @@ These are smoke-test cases, not executed results.
 | Request to use an existing presentation skill | The meta-skill does not trigger | Harness routing trace |
 | Target harness lacks a Claude-only extension | Do not fake portability; choose an available alternative and state the limitation | Harness capability check |
 
-Only text, structure, and reference checks are complete. The cases above are a plan, not executed results. Cross-harness behavior evaluation is not complete.
+Text, structure, and reference checks are complete for the runtime files, the schemas, and the own test set (`evals/evals.json` passes `scripts/check_evals.py`). The cases above are a design plan, not executed results. Cross-harness behavior evaluation of this skill is not complete. One case of the own test set has been run end to end once, with and without the skill in independent executors: the measured delta is small and four of six assertions did not discriminate, so the capability claim stays open.
