@@ -93,7 +93,7 @@ Add only the optional blocks that change a decision, action, or verification:
 - gotchas or common mistakes for known, repeated failures;
 - a quick reference for scanning, not as a substitute for the main path;
 - input/output examples or contrasting examples;
-- an output template; put large templates in `assets/`;
+- an output template or an output directory tree: one dedicated file, routed before the step that produces it; see [Directory and file-template contracts](#directory-and-file-template-contracts);
 - an operating contract for complex or tool skills: primary output, tools, failure tolerance;
 - assets or scripts usage.
 
@@ -117,6 +117,25 @@ Start with one coherent `SKILL.md` and add components only when the work needs t
 Reference routing is a separate design problem. Use [reference-routing.md](reference-routing.md) to decide what to read, when, and when to skip it; a list of files is not routing.
 
 Keep knowledge references flat: `references/<name>.md`, so every file is one level from `SKILL.md`. Assets and scripts may use subdirectories. Do not build chains that hide essential guidance. A correct relative path does not prove that the harness can discover the reference. Check loading behavior in the real harness.
+
+### Directory and file-template contracts
+
+A structural contract is any rule that fixes the shape of the files the skill must produce: the output directory tree, path and naming rules, required sections or frontmatter, or a skeleton to copy. Give it one dedicated carrier. Do not leave it inline in `SKILL.md`, and do not split it across the procedure and several references.
+
+Classify the contract, then choose the carrier:
+
+| Contract | Carrier | Reason |
+| --- | --- | --- |
+| Bytes to copy exactly: skeleton, frontmatter block, starter file | `assets/<name>` | Copied, not interpreted; a diff stays reviewable |
+| Which files and directories exist, their names, and when each is created | `references/<output>-layout.md` | Needs conditions, exceptions, and a failure boundary |
+| A tree or naming rule that must hold exactly | Validator in `scripts/` | Prose cannot enforce it; the check is the authority |
+| Field names, types, and value domains for machine-read files | `schemas/` | Consumed by code, tests, or a validator |
+
+- Keep one authoritative copy. When a validator or schema exists, it defines the check; the prose file states the semantics, the exceptions, and which visible result breaks. Never keep a second copy of the same template.
+- Bundle what is read together. The output tree, the per-file template, and the completion check for one output family belong in one file. A contract that forces two reads is not routed.
+- Route it by action, before the producing step: `Before creating the output directory or writing any file into it, read references/<output>-layout.md. Skip it when the task only edits existing files.`
+- Create the file only when it earns its place: the shape is exact and longer than a few lines, several entry points produce it, or a deviation produces a wrong artifact. A one-line convention stays at the step that applies it. A template for output the agent must design freely narrows the result; state quality goals instead.
+- Do not restate a host project's existing layout. State which project rule governs and the minimum needed to act.
 
 ## Trigger design
 

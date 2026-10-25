@@ -244,6 +244,47 @@
         "The conditions are observable task cues, not restatements of the file names",
         "The answer states which checks were run and which were not"
       ]
+    },
+    {
+      "id": "structural-contract-file",
+      "kind": "task",
+      "weight": 1,
+      "holdout": false,
+      "prompt": "我要做一个「设计稿走查记录」的 skill：每次走查产出一份记录，放在 walkthrough/<项目名>/<日期>/ 下，每个参与走查的人一个文件，文件名是 <昵称>-<序号>.md；每份记录固定六段（背景、问题清单、优先级、责任人、复验条件、结论），问题清单是表格，列也固定。另外每轮还要出一份汇总，也放在同一棵树里。帮我把这个 skill 写出来。",
+      "expected_output": "A skill whose output tree, file naming rule, record structure, and summary layout live in one dedicated file with a routing entry that fires before any file is created; SKILL.md keeps the main path and carries no inline tree and no second copy of the template.",
+      "files": [],
+      "source": {
+        "kind": "synthetic",
+        "note": "prompt written for the case; the requirement (a skill whose output tree and file structure are fixed and reused across sessions) is generic, the walkthrough scenario and naming are invented"
+      },
+      "assertions": [
+        "The output tree, the file naming rule, and the record structure are defined in one dedicated file, not inlined in SKILL.md",
+        "SKILL.md routes to that file before the step that creates the output directory or writes a record, and states when the file is not needed",
+        "Each structure appears once: neither the record sections nor the summary layout is restated in both SKILL.md and the dedicated file",
+        "The dedicated file states the exceptions or failure boundary of the tree, such as two walkthroughs on the same day, or states that none can occur and why",
+        "A structure that must hold exactly is backed by a check, or the answer states which rule stays unchecked",
+        "The answer states which checks were run and which were not"
+      ]
+    },
+    {
+      "id": "trivial-convention-no-file",
+      "kind": "contract",
+      "weight": 1,
+      "holdout": true,
+      "prompt": "给我做一个「会议纪要」的 skill，就一件事：纪要写完存到 notes/meetings/ 下，文件名用日期。别的没什么特别要求，格式我自己写。",
+      "expected_output": "A skill that places the single output path at the step that writes the file; no layout reference, template asset, schema, or validator is created for a convention that fits in the main path.",
+      "files": [],
+      "source": {
+        "kind": "synthetic",
+        "note": "prompt written for the case; it is the deliberate counter-case to a required output tree, taken from the recurring habit of scaffolding a file for every convention"
+      },
+      "assertions": [
+        "No dedicated layout reference, template asset, schema, or validator is created for the single output path",
+        "The output directory and the date file name appear at the step that writes the file, inside SKILL.md",
+        "The skill does not add empty references, assets, schemas, or scripts directories to hold nothing",
+        "The answer does not turn the missing format requirements into an invented template or section list",
+        "The answer states which checks were run and which were not"
+      ]
     }
   ]
 }

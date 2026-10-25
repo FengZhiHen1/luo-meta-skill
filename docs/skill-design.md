@@ -29,13 +29,14 @@ Help an agent create, refactor, and improve reusable Agent Skills, with emphasis
 - Measurement requires an independent executor. A fresh agent, session, or process starts without the authoring history; without one, the skill delivers the case set and states what remains unmeasured instead of self-running it.
 - Harness neutrality: a harness is the agent runtime that discovers, loads, and runs skills. Verify platform mechanisms before relying on them; never assume availability from a file name.
 - Structured artifacts get one schema: keep field names, types, and value domains in one machine-readable schema (for example, `schemas/`) only when code, tests, or a validator consume it; derive code and tests from it.
+- Structural contracts get one carrier: an exact output tree or file template lives in a dedicated file, chosen by contract type (`assets/` for bytes to copy, a reference for rules to apply, a validator when the rule must hold exactly), routed before the producing step, with no second copy.
 - Reference routing as a decision: every reference needs a read-when, plus a skip-when when over-reading is a risk; the default path should need no reference; a file index is not routing.
 
 ## File organization
 
 - `SKILL.md`: task triage, skill-worthiness decision, reference routing, core design principles, verification and delivery, stop and hand-back conditions.
 - `references/research-and-synthesis.md`: two-anchor research, source evaluation, knowledge conversion, external skill adaptation.
-- `references/skill-architecture.md`: scope and boundaries, `SKILL.md` body shape, specification documents, runtime structure, trigger boundary and case design, harness compatibility.
+- `references/skill-architecture.md`: scope and boundaries, `SKILL.md` body shape, specification documents, runtime structure including directory and file-template contracts, trigger boundary and case design, harness compatibility.
 - `references/instruction-craft.md`: semantics first, constraint strength, technical writing rules, trigger descriptions, revision strategy, precision check.
 - `references/reference-routing.md`: routing contract, formats, anti-patterns, routing tests.
 - `references/iteration-and-evaluation.md`: failure diagnosis, proportionate evaluation, trigger and output checks, honest reporting.

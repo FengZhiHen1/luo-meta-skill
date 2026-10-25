@@ -29,6 +29,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - `SKILL.md`, `skill-architecture.md`, and `instruction-craft.md` now treat routing as a decision: explicit default, read-when, and skip-when when over-reading is a risk.
 - `SKILL.md` now uses a read-when/skip-when routing table and a stop/hand-back block; `instruction-craft.md` checks the five body questions.
+- `references/skill-architecture.md` gains a directory and file-template contract section: one dedicated carrier per structural contract, carrier chosen by contract type, a single authoritative copy, routing before the producing step, and the threshold for creating the file at all.
+- `SKILL.md` states that a required output tree or file template gets its own file and a routing entry instead of an inline copy.
+- Own test set: a case whose output tree and file structure are fixed, and the counter-case whose one-line path must not create a file.
 
 ## [0.1.0] - 2026-10-19
 
