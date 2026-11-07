@@ -18,7 +18,8 @@ Help an agent create, refactor, and improve reusable Agent Skills, with emphasis
 - Task triage: fix small issues directly; research and design only for a new capability, material change, or diagnosis.
 - Shape selection: choose a starting organizational shape (procedure, knowledge, tool, judgment, creative), allow hybrids, and adapt it to the task. Shapes are patterns, not categories or gates.
 - Two-anchor research: real tasks and capability gaps complement systematic domain knowledge.
-- Specification and runtime separation: project `docs/` maintains intent, behavior, implementation, and acceptance; runtime contains only what execution needs.
+- Design record and runtime separation: every skill carries a `docs/` record of why the rules exist and which alternatives were rejected. The record ships with the skill, never loads during a task, and the runtime files neither restate it nor point to it.
+- One authoritative statement per rule: a rule appears once, where the agent acts on it. When it surfaces in several files, keep one statement and record the reason in `docs/` instead of repeating it.
 - Description as a routing contract: the harness reads it before the body; state the job and trigger boundary in the language of the requests it must catch, keep the shortest wording that preserves the boundary, and do not summarize the workflow.
 - Language follows the audience: local skills use the language of their requests; skills with an international audience use English as the primary language and add other terms only when they change routing.
 - Precise technical instructions: settle semantics first, then choose constraint strength by behavior fragility. Borrow ASD-STE100 clarity principles without claiming conformity. Apply them only to technical runtime instructions, not to creative output or source material.
@@ -32,11 +33,31 @@ Help an agent create, refactor, and improve reusable Agent Skills, with emphasis
 - Structural contracts get one carrier: an exact output tree or file template lives in a dedicated file, chosen by contract type (`assets/` for bytes to copy, a reference for rules to apply, a validator when the rule must hold exactly), routed before the producing step, with no second copy.
 - Reference routing as a decision: every reference needs a read-when, plus a skip-when when over-reading is a risk; the default path should need no reference; a file index is not routing.
 
+## Design record policy
+
+Every skill carries a design record under its own `docs/`, normally `docs/design.md`. The record states why the skill exists, what it excludes, and for each non-obvious rule the reason plus the alternative that was rejected. A small skill states only its core principle.
+
+Why the record is mandatory:
+
+- Without the reason, each optimization session re-derives it and restates the rule in a new place. The repetition, not the missing prose, is the failure this record prevents.
+- A rule survives a change only if a maintainer can tell whether it is still load-bearing.
+
+Why it ships and the runtime files do not point to it:
+
+- A copy of the skill without the record loses the rationale at the moment of distribution. `evals/` ships for the same reason.
+- The harness never loads the record, so it cannot enter the task path. A runtime file that points to it breaks wherever the record is not loaded.
+
+Rejected alternatives:
+
+- Optional `docs/`: leaves the reason to session memory, which is what produces the restating.
+- A validator for record presence: an empty file passes, so the check has no discriminating power.
+- Iteration history in the record: the record ships, so a chronological log would ship with it.
+
 ## File organization
 
 - `SKILL.md`: task triage, skill-worthiness decision, reference routing, core design principles, verification and delivery, stop and hand-back conditions.
 - `references/research-and-synthesis.md`: two-anchor research, source evaluation, knowledge conversion, external skill adaptation.
-- `references/skill-architecture.md`: scope and boundaries, `SKILL.md` body shape, specification documents, runtime structure including directory and file-template contracts, trigger boundary and case design, harness compatibility.
+- `references/skill-architecture.md`: scope and boundaries, `SKILL.md` body shape, the design record in `docs/`, runtime structure including directory and file-template contracts, trigger boundary and case design, harness compatibility.
 - `references/instruction-craft.md`: semantics first, constraint strength, technical writing rules, trigger descriptions, revision strategy, precision check.
 - `references/reference-routing.md`: routing contract, formats, anti-patterns, routing tests.
 - `references/iteration-and-evaluation.md`: failure diagnosis, proportionate evaluation, trigger and output checks, honest reporting.
@@ -51,6 +72,8 @@ The eight references are routed by task and are not all loaded at startup.
 `schemas/evals.schema.json` and `schemas/results.schema.json` are the single authoritative definition of the case file and the run result files. The scripts read the schemas instead of restating field rules.
 
 `evals/` holds this skill's own test set and fixtures. It ships with the skill because it is part of the product: it is how a change to this skill can be shown to help or to hurt. Run results stay outside the skill directory.
+
+`docs/` holds this skill's design record. It ships with the skill and never loads during a task; `SKILL.md` and the references do not point to it.
 
 ## Source trade-offs
 
@@ -77,6 +100,7 @@ An earlier implementation was a branch of yao-meta-skill with scripts, evaluatio
 - A wording-only change does not require a new snapshot, version file, or duplicate document.
 - When a real task exposes a design problem, fix the runtime guidance first and then update the rationale here.
 - Keep iteration records, evaluation output, and one-off research out of the distributed skill.
+- Keep `docs/` to current decisions and their reasons. It ships, so a chronological history there would ship with it.
 - Keep the distributed skill self-contained. Do not reference the author's repository layout, local instruction files, or workspaces from runtime content; local conventions may inform the implementation, but the skill must carry the rules it needs.
 - Keep this skill's own `description` and runtime guidance in English. It is an international open-source product; do not localize its metadata to the author's local language.
 

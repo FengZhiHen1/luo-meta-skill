@@ -9,7 +9,7 @@ Improve the skill itself. The goal is better domain expertise, execution structu
 
 ## Classify the task and scale effort
 
-1. Read the target `SKILL.md`, project instructions, `docs/`, relevant examples, scripts, and available tools. Before changing an existing skill, confirm its current behavior and the user's existing changes.
+1. Read the target `SKILL.md`, its `docs/`, project instructions, relevant examples, scripts, and available tools. Before changing an existing skill, confirm its current behavior and the user's existing changes.
 2. Classify the request:
    - Small fix: wording, paths, obvious errors. Change only the affected parts.
    - New capability or material behavior change: research, then design, then write.
@@ -52,10 +52,10 @@ A small fix may need no reference. Combine references when the work genuinely sp
 
 - Use two research anchors: representative tasks and capability gaps, and systematic knowledge of the domain. The first sets priorities; the second exposes blind spots and mature methods that current failures do not reveal.
 - Convert high-value findings into what the agent will decide, do, or verify differently: decision cues, concrete steps, precise facts, contrasting examples, reusable mechanisms. Preserve conditions, trade-offs, and exceptions.
-- Maintain goals, scope, expected behavior, boundaries, implementation choices, and acceptance methods in the target skill project's `docs/`. Scale detail to complexity. Do not require `SPEC.md`, fixed sections, hash synchronization, or evidence dossiers.
+- Every skill carries a design record in its own `docs/`, by default one file: why a skill, the scope and non-goals, and for each non-obvious rule the reason it exists and the alternative that was rejected. A small skill may use about ten lines and state only its core design principle. Scale the record to complexity; do not add `SPEC.md`, fixed sections, hash synchronization, or evidence dossiers.
 - Keep runtime content to what execution needs: `SKILL.md` for the main path and reference routing; `references/` for task-time knowledge; `scripts/` for deterministic, repeated, or fragile operations; `assets/` for templates and materials to copy; a required output tree or file template gets its own file and a routing entry, not an inline copy; `evals/` for the test cases and fixtures that ship with the skill. Run results belong in a workspace outside the skill directory.
 - Add `schemas/` only when structured artifacts are consumed by code, tests, or a validator; keep one authoritative schema and derive code and tests from it. Do not create an empty schema directory.
-- `docs/` is not runtime context by default. Do not put maintenance rationale, source arguments, or iteration records into `SKILL.md`.
+- `docs/` ships with the skill directory, but the harness never loads it during a task. A skill's `SKILL.md` and `references/` must not point to its `docs/` or restate it. Because it ships, keep it portable and free of local machine locations, private repositories, and internal tools. Keep iteration records and one-off research out of it; it holds current decisions and their reasons, not a history.
 - Use relative paths only, pointing to files inside this skill. Do not reference absolute paths, other repositories, or local machine locations.
 - Use subagents, hooks, special frontmatter, or platform-specific mechanisms only when the target harness (the agent runtime that loads the skill) actually supports them. Verify in the harness before writing them into the skill.
 
@@ -89,11 +89,11 @@ See [instruction-craft.md](references/instruction-craft.md) for examples and bou
 
 ## Verify and deliver
 
-- Small fix: check the affected text, paths, and reference targets.
+- Small fix: check the affected text, paths, and reference targets, and merge a rule that the edit leaves stated in more than one file.
 - Behavior change: use representative tasks and important boundaries that exercise the changed behavior. Inspect actual artifacts and execution traces. For trigger changes, test positive, negative, and neighboring cases in the target harness; a text review is not a trigger test.
 - When the result matters, the conclusion is uncertain, or the user asks for measured evidence: build or update the skill's test set ([test-set-design.md](references/test-set-design.md)), audit it ([eval-audit.md](references/eval-audit.md)), then run it in independent executors ([benchmark-runs.md](references/benchmark-runs.md)). Without a fresh executor, do not run the benchmark; deliver the test set and say what remains unmeasured.
 - Distinguish three states: structure checked, design reviewed, runtime behavior tested. Do not report a test that was not run as passed.
-- When behavior or design changes, update the affected `docs/`. A wording-only change does not require a new snapshot or a second authoritative explanation.
+- When behavior or design changes, update the affected decision and its reason in `docs/`. A wording-only change updates nothing outside the changed text; do not add a second copy of a rule or a new snapshot.
 - Deliver usable files and a concise explanation: major design choices, verification actually performed, and remaining material limitations. Unless the user asks, do not produce scorecards, evidence reports, or governance checklists.
 
 ## Stop and hand back

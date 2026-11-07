@@ -19,7 +19,10 @@
         "The description carries an explicit non-applicable case, and contains no arrow or numbered step sequence",
         "The body path names the input, the ordering decision, the output shape, and the stopping condition, and every file it names exists in the produced skill",
         "SKILL.md contains no version history, iteration log, or maintenance rationale",
-        "The skill directory contains no docs folder, design notes, or run notes",
+        "The skill directory carries a docs/ design record that states why the skill is needed, the scope and non-goals, and the reason behind at least one non-obvious rule",
+        "The design record names an alternative that was rejected rather than restating the rule",
+        "The design record is not a chronological log: no version history, iteration record, or score history",
+        "SKILL.md and the references do not point to docs/",
         "Every check reported as executed carries the command and its observed result",
         "Concrete test cases with prompts and observable success criteria are produced or proposed for this skill"
       ]
@@ -216,6 +219,7 @@
         "The main path states the input, the judging or ordering decision, the output shape, and the stopping condition",
         "Behavior the old skill delivered is preserved or its removal is stated: rendering through scripts/render.py and the quality checklist",
         "The duplicate artifacts are resolved: the two template copies and the unused legacy script are either dropped or given a single authoritative path",
+        "The history under docs/ is resolved: scoring history, FAQ, and template notes leave the distributed skill, and docs/ holds at most a design record of current decisions",
         "The answer states which checks were run and which were not"
       ]
     },
@@ -283,6 +287,78 @@
         "The output directory and the date file name appear at the step that writes the file, inside SKILL.md",
         "The skill does not add empty references, assets, schemas, or scripts directories to hold nothing",
         "The answer does not turn the missing format requirements into an invented template or section list",
+        "A short design record exists even for this trivial skill and states only its core design decision, without expanding into a specification",
+        "The answer states which checks were run and which were not"
+      ]
+    },
+    {
+      "id": "docs-design-record",
+      "kind": "contract",
+      "weight": 1,
+      "holdout": false,
+      "prompt": "这个 skill（evals/files/no-docs-skill/）按我们新定的标准改一下。没有别的诉求，就按标准来。",
+      "expected_output": "A docs/ design record is created for the skill: why the skill exists, the scope and non-goals, and the reason plus the rejected alternative for at least one non-obvious rule. The runtime files keep their behavior and do not point to the record.",
+      "files": [
+        "evals/files/no-docs-skill/SKILL.md",
+        "evals/files/no-docs-skill/references/risk-levels.md"
+      ],
+      "source": {
+        "kind": "real",
+        "note": "requirement comes from this project's design discussion on 2026-11-07: every skill carries a design record that ships with it; the dependency-audit skill is written for the case"
+      },
+      "assertions": [
+        "A docs/ file records why the skill exists, the scope and non-goals, and the reason for at least one non-obvious rule",
+        "The record names an alternative that was rejected, not only the choice that was made",
+        "The record does not restate the runtime rules, and carries no iteration log, score history, or dated changelog",
+        "SKILL.md and references keep their behavior and do not point to docs/",
+        "The answer states which checks were run and which were not"
+      ]
+    },
+    {
+      "id": "runtime-must-not-read-docs",
+      "kind": "contract",
+      "weight": 1,
+      "holdout": false,
+      "prompt": "这个 skill（evals/files/docs-pointing-skill/）在别的 harness 里用起来不对：有的会话读不到 docs/design.md，同一件事给过两种不同做法。帮我处理。",
+      "expected_output": "The runtime files stop depending on docs/: the pointer is removed from SKILL.md and from the reference, any instruction that required the record is rewritten so the task path works without it, and no execution detail is lost.",
+      "files": [
+        "evals/files/docs-pointing-skill/SKILL.md",
+        "evals/files/docs-pointing-skill/references/note-structure.md",
+        "evals/files/docs-pointing-skill/docs/design.md"
+      ],
+      "source": {
+        "kind": "derived",
+        "note": "recurring real failure that a runtime file routed into docs/ and the task path broke where the record was not loaded; the api-migration-note skill is written for the case"
+      },
+      "assertions": [
+        "No file the harness loads during a task points to docs/: the pointer is gone from SKILL.md and from the reference",
+        "The instruction that required reading the record is rewritten so the task path works without it",
+        "The execution detail the record mentioned is present in the runtime files, not only in docs/",
+        "The design record stays in docs/ and is not turned into a second copy of the runtime rules",
+        "The answer states which checks were run and which were not"
+      ]
+    },
+    {
+      "id": "restated-principle-consolidation",
+      "kind": "task",
+      "weight": 1,
+      "holdout": false,
+      "prompt": "这个 skill（evals/files/restated-principle-skill/）我改了几轮，现在同一条原则在 SKILL.md 和两篇 reference 里都在讲，措辞还不太一样。帮我理清楚。",
+      "expected_output": "One authoritative statement of the rule where the agent acts on it, the other statements removed, the conditions they disagreed on reconciled explicitly, and the reason recorded in docs/ instead of in the runtime text.",
+      "files": [
+        "evals/files/restated-principle-skill/SKILL.md",
+        "evals/files/restated-principle-skill/references/review.md",
+        "evals/files/restated-principle-skill/references/format.md"
+      ],
+      "source": {
+        "kind": "real",
+        "note": "the complaint about one principle restated across files is from this project's design discussion on 2026-11-07; the release-note-review skill is written for the case"
+      },
+      "assertions": [
+        "The impact-grade rule is stated once, in the file where the agent acts on it, and removed from the other two files",
+        "The disagreement over internal-only changes is reconciled explicitly, and no condition from either version is dropped silently",
+        "The reason the rule exists and the rejected alternative are recorded in docs/, not added to the runtime text",
+        "The design record does not restate the rule as a second normative statement",
         "The answer states which checks were run and which were not"
       ]
     }

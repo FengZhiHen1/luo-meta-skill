@@ -90,7 +90,7 @@ Do not mirror the source tree. Group knowledge by use. When the set grows, use r
 3. Check the target harness's tools, permissions, loading mechanism, and version limits.
 4. Determine which semantics must survive: trigger conditions, safety boundaries, exact contracts, professional trade-offs.
 5. Rewrite in independent language. Check licenses and attribution before copying protected material.
-6. Record meaningful sources, their version or commit, reasons for adoption, and reasons for rejection in `docs/`. Do not put source arguments into runtime references.
+6. Record meaningful sources, their version or commit, reasons for adoption, and reasons for rejection in the skill's `docs/`. Do not put source arguments into runtime references.
 
 Do not mechanically copy section order, commands, test counts, or maintenance rituals. A source is evidence and a method library, not an architecture standard.
 
@@ -107,6 +107,6 @@ Do not mechanically copy section order, commands, test counts, or maintenance ri
 
 ## Division of labor with documentation
 
-- `docs/`: research conclusions, sources, trade-offs, acceptance methods, and open questions. For maintainers.
+- `docs/`: design decisions and their reasons, research conclusions, sources, trade-offs, acceptance methods, and open questions. It ships with the skill and never loads during a task; for maintainers.
 - `references/`: professional knowledge, methods, and exact material that the agent consults during a task. Loaded on demand.
 - `SKILL.md`: main path, default behavior, key boundaries, and reference routing.

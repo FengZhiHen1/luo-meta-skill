@@ -91,7 +91,7 @@ luo-meta-skill/
 │   ├── evals.json
 │   └── files/
 ├── docs/
-│   └── skill-design.md
+│   └── design.md
 ├── README.md
 ├── README.zh-CN.md
 ├── CONTRIBUTING.md
@@ -100,13 +100,14 @@ luo-meta-skill/
 └── LICENSE
 ~~~
 
-Runtime files: `SKILL.md`, `references/`, and the optional `scripts/` used during benchmarking. `schemas/` defines the case file and result files that the scripts consume. `evals/` is the skill's own test set. `docs/` records design intent and source trade-offs. The remaining files are repository metadata.
+Runtime files: `SKILL.md`, `references/`, and the optional `scripts/` used during benchmarking. `schemas/` defines the case file and result files that the scripts consume. `evals/` is the skill's own test set. `docs/` is the design record: it ships with the skill, the harness never loads it, and the runtime files do not point to it. The remaining files are repository metadata.
 
 ## Design principles
 
 - **Description is a routing contract.** The harness reads the name and description before the body; trigger conditions belong there.
 - **Routing is a decision, not an index.** Every reference needs a read-when, plus a skip-when when over-reading is a risk; the default path should need no reference.
-- **Capability over documentation volume.** A skill should change what the agent decides or does, not add files.
+- **Capability over documentation volume.** A skill should change what the agent decides or does, not add runtime files.
+- **Every skill carries its design record.** `docs/` holds why each non-obvious rule exists and which alternative was rejected; it ships with the skill, the harness never loads it, and the runtime files do not point to it.
 - **Schemas only when consumed.** A produced skill with structured artifacts gets one authoritative schema (for example, `schemas/`) only when code, tests, or a validator consume it; derive code and tests from it.
 - **Shapes are starting points.** Procedure, knowledge, tool, judgment, and creative shapes; adapt them to the task.
 - **Research with two anchors.** Representative tasks and capability gaps, plus systematic domain knowledge.
@@ -142,7 +143,7 @@ If a contribution is substantially AI-generated, disclose it in the pull request
 
 ## Acknowledgements
 
-The method synthesizes public work on Agent Skills, including the [Agent Skills specification](https://agentskills.io/specification) and skill-authoring approaches from Sentry, OpenAI, Anthropic, Superpowers, Skillet, and Yao Meta Skill. [docs/skill-design.md](docs/skill-design.md#source-trade-offs) records what was adopted and what was not.
+The method synthesizes public work on Agent Skills, including the [Agent Skills specification](https://agentskills.io/specification) and skill-authoring approaches from Sentry, OpenAI, Anthropic, Superpowers, Skillet, and Yao Meta Skill. [docs/design.md](docs/design.md#source-trade-offs) records what was adopted and what was not.
 
 ## License
 

@@ -6,7 +6,7 @@
 
 [English](README.md) | [简体中文](README.zh-CN.md)
 
-> 本译文对应英文版 `README.md`，最后同步：2026-10-22。
+> 本译文对应英文版 `README.md`，最后同步：2026-11-07。
 
 > [!IMPORTANT]
 > 早期公开版本（`0.1.0`）。文本、结构和引用检查已完成；尚未跨所有 harness（agent 运行时）评估运行时行为。详见下文「状态」。
@@ -93,7 +93,7 @@ luo-meta-skill/
 │   ├── evals.json
 │   └── files/
 ├── docs/
-│   └── skill-design.md
+│   └── design.md
 ├── README.md
 ├── README.zh-CN.md
 ├── CONTRIBUTING.md
@@ -102,13 +102,14 @@ luo-meta-skill/
 └── LICENSE
 ~~~
 
-运行时使用 `SKILL.md`、`references/`，以及 benchmark 时可选调用的 `scripts/`；`schemas/` 定义脚本消费的用例文件与结果文件；`evals/` 是本 skill 自己的测试集；`docs/` 记录设计意图与来源取舍；其余是仓库配置。
+运行时使用 `SKILL.md`、`references/`，以及 benchmark 时可选调用的 `scripts/`；`schemas/` 定义脚本消费的用例文件与结果文件；`evals/` 是本 skill 自己的测试集；`docs/` 是设计记录：随 skill 分发、运行时永不加载、正文不指向它；其余是仓库配置。
 
 ## 设计原则
 
 - **description 是路由契约。** harness 在加载正文前读取 name 和 description；触发条件应放在这里。
 - **路由是决策，不是目录。** 每个 reference 都要有 read-when；有过度读取风险时要有 skip-when；默认路径不应依赖 reference。
-- **能力优先于文档数量。** skill 应改变 agent 的判断或行动，而不是增加文件。
+- **能力优先于文档数量。** skill 应改变 agent 的判断或行动，而不是增加运行时文件。
+- **每个 skill 都带设计记录。** `docs/` 记录每条非显然规则为什么存在、否掉了哪个替代方案；它随 skill 分发，harness 运行时永不加载，正文不指向它。
 - **只在有消费方时加 schema。** 产出的 skill 如果有结构化产物，只保留一份权威 schema（例如 `schemas/`），且仅当代码、测试或校验器消费它时才加；代码和测试从 schema 派生。
 - **形态只是起点。** 流程、知识、工具、判断和创作是组织形态；按任务调整。
 - **用两个锚点研究。** 代表性任务与能力缺口，加上系统的领域知识。
@@ -144,7 +145,7 @@ Luo Meta Skill 面向实现了 [Agent Skills 规范](https://agentskills.io/spec
 
 ## 致谢
 
-本方法综合了 Agent Skills 规范，以及 Sentry、OpenAI、Anthropic、Superpowers、Skillet、Yao Meta Skill 的公开 skill-authoring 方法。[docs/skill-design.md](docs/skill-design.md#source-trade-offs) 记录了采用与未采用的部分。
+本方法综合了 Agent Skills 规范，以及 Sentry、OpenAI、Anthropic、Superpowers、Skillet、Yao Meta Skill 的公开 skill-authoring 方法。[docs/design.md](docs/design.md#source-trade-offs) 记录了采用与未采用的部分。
 
 ## 许可证
 

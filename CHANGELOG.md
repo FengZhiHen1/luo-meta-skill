@@ -8,6 +8,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
+- Every skill now carries a design record under its own `docs/`: why the skill exists, scope and non-goals, and for each non-obvious rule the reason plus the alternative that was rejected. A small skill may record only its core design principle.
+- `docs/` ships with the skill directory. The harness never loads it during a task, and runtime files must not point to it or restate it.
+- Three eval cases with fixtures: a skill with no design record, a runtime file that points into `docs/`, and one principle restated across three files.
 - `references/test-set-design.md`: two-question framing (necessity and quality), case families, prompt and fixture design, the assertion discriminating test, trigger and pressure cases, holdout, the default case format, and mapping for foreign case formats.
 - `references/benchmark-runs.md`: executor preconditions and refusal rule, run layout, isolation rules, capture, repetitions, three grading layers, weak-assertion and necessity reading, and reporting rules.
 - `references/eval-audit.md`: how to judge whether a case, a set, or a measured result can support its claim, including anchor, discrimination, baseline validity, coverage, author bias, instrument drift, and the conclusion-strength table.
@@ -32,6 +35,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `references/skill-architecture.md` gains a directory and file-template contract section: one dedicated carrier per structural contract, carrier chosen by contract type, a single authoritative copy, routing before the producing step, and the threshold for creating the file at all.
 - `SKILL.md` states that a required output tree or file template gets its own file and a routing entry instead of an inline copy.
 - Own test set: a case whose output tree and file structure are fixed, and the counter-case whose one-line path must not create a file.
+- `SKILL.md` makes the design record mandatory, states that `docs/` ships but is never loaded, and requires merging a rule left stated in more than one file before delivery.
+- `instruction-craft.md` requires one authoritative statement per rule, cross-file duplicate removal, and a duplicate check in the precision list.
+- `skill-architecture.md` replaces "Specifications and design documents" with "Design record in docs/" and routes the record as a shipped, never-loaded component.
+- README, README.zh-CN, and the skill's own design record describe the new contract.
 
 ## [0.1.0] - 2026-10-19
 

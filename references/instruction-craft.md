@@ -86,7 +86,7 @@ A short capability list is acceptable; an outline of the body is not. If the des
 - Do not turn one failed observation into a global rule. First check whether it is reproducible and whether it applies only to one kind of task.
 - Do not add many branches to cover extreme cases. Write the important boundaries and leave the rest to judgment.
 - After editing, check that terms are consistent, conditions remain next to their actions, and defaults and exceptions do not contradict each other.
-- Delete duplicate passages. Two near-identical rules make the agent choose one, not follow both.
+- Delete duplicate passages across files, not only within one. When a rule appears in the body and in one or more references, keep the authoritative statement where the agent acts on it, delete the others, and put the reason in the skill's `docs/`. Two near-identical rules make the agent choose one, not follow both.
 
 ## Precision check
 
@@ -97,6 +97,7 @@ Before delivery, check each item:
 - Can a new reader answer the five questions in [skill-architecture.md](skill-architecture.md): purpose and default outcome, main path, reference routing, boundaries and failure handling, and completion check?
 - Are important conditions, exceptions, and stopping points missing?
 - Do conflicting old rules remain?
+- Is any rule stated in more than one file, or repeated in the body under a different name?
 - Are key identifiers, paths, and formats exact?
 - Has a preference been written as a hard requirement?
 - Does the text invent numeric thresholds, source counts, or minimums without a real basis?

@@ -26,19 +26,22 @@ When changing an existing skill, start from its current behavior and project con
 
 A skill can contain both methods and tools, but it must center on one coherent task. Avoid one-sentence micro-skills and unbounded everything-skills.
 
-## Specifications and design documents
+## Design record in docs/
 
-Maintain the current specification and design in the target skill project's `docs/`, following existing project conventions. One document is enough for a small skill; a complex skill may separate behavior, architecture, interfaces, and evaluation. The documentation should let an implementer who did not join the conversation understand the design.
+Every skill carries a design record in its own `docs/`, normally one file (`docs/design.md`). The record carries what the runtime files cannot: the reason behind a decision and the alternative that was rejected.
 
-Include as needed:
+Include:
 
-- Intent and scope: target users, task family, triggers and exclusions, promised value, and non-goals.
-- Justification: why a skill is needed rather than a one-off response, project instruction, existing tool, or documentation.
-- Expected behavior: important outputs, task branches, dependencies, failure boundaries, and exact contracts.
-- Implementation design: knowledge strategy, runtime entry point, reference routing, deterministic tools, harness dependencies, major trade-offs, and rationale.
-- Evidence and acceptance: representative tasks, real outcomes or risks, suitable validation methods, and open questions.
+- Why a skill: the task family, who hits it, and the alternatives ruled out, such as a one-off answer, a project instruction, a deterministic check, or an existing tool.
+- Scope and non-goals.
+- For each non-obvious rule: the reason it exists, the rejected alternative, and the condition that would reopen the decision.
+- How the skill is accepted: representative tasks, validation method, and open questions.
 
-Do not turn these items into a mandatory template, and do not fill every field for its own sake. Keep only the information needed to implement and maintain the skill. A wording-only change that does not change intent or behavior does not require a new specification version.
+A small skill may use about ten lines and state only its core design principle. A complex skill may split the record by behavior, architecture, interfaces, and evaluation. The record must let a maintainer who did not join the conversation decide whether a rule is still load-bearing.
+
+The record is not a second copy of the rules: name a rule, do not restate it. It is not a chronological log: iteration history, evaluation output, and one-off research stay outside the distributed skill. A wording-only change that does not change intent or behavior does not require an update.
+
+Do not turn these items into a fixed template or fill every field for its own sake. Keep only the information a maintainer needs to keep the skill correct.
 
 ## Choose a starting shape
 
@@ -99,9 +102,9 @@ Add only the optional blocks that change a decision, action, or verification:
 
 Match the blocks to the shape in [Choose a starting shape](#choose-a-starting-shape). A procedure needs checkpoints and stop conditions; a knowledge skill needs selection criteria and freshness; a tool skill needs exact contracts and error boundaries; a judgment skill needs criteria, cues, and trade-offs; a creative skill needs goals, audience, constraints, and room for alternatives.
 
-Do not put status, history, version, changelog, ownership, design rationale, source arguments, or iteration records in `SKILL.md`; keep them in `docs/` or repository metadata. Do not add a "When to use" section; the description owns the trigger. Do not add README, CHANGELOG, or QUICK_REFERENCE files as runtime files inside a skill; repository metadata is separate. Do not write unverified harness mechanisms, absolute paths, other repositories, or local machine locations.
+Do not put status, history, version, changelog, ownership, design rationale, source arguments, or iteration records in `SKILL.md`; keep them in `docs/` or repository metadata, and do not let a runtime file point to `docs/`. Do not add a "When to use" section; the description owns the trigger. Do not add README, CHANGELOG, or QUICK_REFERENCE files as runtime files inside a skill; repository metadata is separate. Do not write unverified harness mechanisms, absolute paths, other repositories, or local machine locations.
 
-Keep the body under the specification's guideline of about 500 lines and 5,000 tokens. If it grows, remove duplicated reference material, rationale, and edge cases the agent can handle; split a genuine branch into a reference rather than cutting the main path. The body carries the main path; references carry task-time detail; `docs/` carries design intent.
+Keep the body under the specification's guideline of about 500 lines and 5,000 tokens. If it grows, remove duplicated reference material, rationale, and edge cases the agent can handle; split a genuine branch into a reference rather than cutting the main path. The body carries the main path; references carry task-time detail; `docs/` carries the design record and never loads during a task.
 
 ## Runtime structure
 
@@ -111,6 +114,7 @@ Start with one coherent `SKILL.md` and add components only when the work needs t
 - `scripts/`: deterministic transformations, repeated calculations, or fragile tools. A script should have clear inputs and outputs and be verified on representative safe cases.
 - `assets/`: templates, design examples, input/output materials, and other resources needed to produce results.
 - `schemas/`: optional machine-readable contracts for structured artifacts (JSON Schema, SQL DDL, or equivalent), only when code, tests, or a validator consume them. Keep one authoritative definition and derive code and tests from it; do not duplicate field rules in prose.
+- `docs/`: the design record described in [Design record in docs/](#design-record-in-docs). It ships with the skill directory, never loads during a task, and is never routed to from `SKILL.md` or `references/`.
 - Routing: establish it only when inputs genuinely select different knowledge or tools. Provide a default path and make ambiguous cases recoverable.
 - Subagents, hooks, execution isolation, special frontmatter: use only when the target harness actually supports them and the benefit can be measured. Do not assume that one harness shares another harness's mechanisms.
 
@@ -173,7 +177,7 @@ Do not assume that other harnesses support a mechanism because one harness does.
 - Do not assume that this skill's own repository layout or tooling applies elsewhere.
 - Keep runtime references relative and inside the skill. Do not point to absolute paths, other repositories, or local machine locations.
 - Keep field names, types, and value domains for structured artifacts in one authoritative schema (for example, `schemas/`), and derive code and tests from it.
-- Keep iteration records, evaluation output, and one-off research out of the distributed runtime surface.
+- Keep iteration records, evaluation output, and one-off research out of the distributed skill; `docs/` ships, so it holds current decisions only.
 - Remove or archive retired implementations instead of leaving them active.
 
 ## Complexity check
