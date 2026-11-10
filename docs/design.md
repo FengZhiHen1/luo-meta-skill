@@ -16,7 +16,7 @@ Help an agent create, refactor, and improve reusable Agent Skills, with emphasis
 ## Design principles
 
 - Task triage: fix small issues directly; research and design only for a new capability, material change, or diagnosis.
-- Shape selection: choose a starting organizational shape (procedure, knowledge, tool, judgment, creative), allow hybrids, and adapt it to the task. Shapes are patterns, not categories or gates.
+- Shape selection: component lists alone leave the writer to infer the body's organization. Task cues and a hybrid example are intended to support that choice without fixing headings. Rejected: a template per category, declared primary/secondary types, or a directory scaffold per shape; these constrain composition without demonstrating better results. Risk-based validation checks whether the chosen structure works, rather than rewarding a type label. Revisit if representative tasks show that these cues do not support a usable structure.
 - Two-anchor research: real tasks and capability gaps complement systematic domain knowledge.
 - Design record and runtime separation: every skill carries a `docs/` record of why the rules exist and which alternatives were rejected. The record ships with the skill, never loads during a task, and the runtime files neither restate it nor point to it.
 - One authoritative statement per rule: a rule appears once, where the agent acts on it. When it surfaces in several files, keep one statement and record the reason in `docs/` instead of repeating it.
@@ -80,8 +80,8 @@ The eight references are routed by task and are not all loaded at startup.
 
 | Source | Adopted | Not copied |
 | --- | --- | --- |
-| Sentry skill-writer | Source research, source adaptation, on-demand references, precision checks, no-first-person description rules | Mandatory SPEC, fixed coverage matrix, registration process |
-| OpenAI skill-creator | Runtime economy, matching freedom to task fragility, resource responsibilities, description as the only trigger surface | Harness-specific initialization and UI metadata |
+| Sentry skill-writer | Source research, source adaptation, on-demand references, precision checks, no-first-person description rules; need-based mechanism selection and locally scoped hybrids from snapshot `f57ada2` | Mandatory SPEC, fixed coverage matrix, registration process, named execution-shape gates |
+| OpenAI skill-creator | Runtime economy, matching freedom to task fragility, resource responsibilities, description as the only trigger surface; sequential versus independent-task organization from the initializer in snapshot `49f948f` | Harness-specific initialization and UI metadata, fixed category templates |
 | Anthropic skill-creator | Real artifact feedback, trigger checks, with-skill and without-skill runs in fresh executors, evidence-citing grading, blind comparison for subjective quality, assertion critique | Mandatory full evaluation pipeline, dedicated viewer and script suite, required subagents |
 | Superpowers writing-skills | Use failure scenarios and pressure tests to expose instruction gaps, workflow summaries in descriptions can displace the body | The absolute requirement to write a failing test before every change |
 | Yao Meta Skill | Non-skill decisions, nearby triggers, portability awareness, trigger-first authoring, conditional exclusions, shorter-wins, separate answer key for blind review, missing evidence stays missing, holdout rotation | Skill OS, unified IR, release gates, governance, execution-evidence ledger |

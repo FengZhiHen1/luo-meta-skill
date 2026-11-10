@@ -45,15 +45,35 @@ Do not turn these items into a fixed template or fill every field for its own sa
 
 ## Choose a starting shape
 
-These are organizational starting points, not categories. A skill may combine shapes. Use the shape to choose default components and the first validation case. Do not add metadata, mode names, or gates for a shape; add only what the task needs.
+These are organizational starting points, not categories. Choose the body's main organization from the requests the skill must handle and their inputs. Do not add metadata, mode names, or gates for a shape; add only what the task needs.
 
-| Shape | Default structure | Main risk |
-| --- | --- | --- |
-| Procedure or workflow | Ordered steps; scripts for deterministic or fragile steps; stop and exception conditions; references only for branch-specific knowledge | Skipped steps, unclear recovery |
-| Knowledge | Task-routed references; freshness handling for volatile facts; worked examples; minimal procedural text | Source dump, stale facts |
-| Tool or interface | Exact contracts; scripts or commands; error boundaries; harness checks; references for exact API details | Silent failure, assumed portability |
-| Judgment or review | Criteria; contrasting examples; trade-offs; output format | Rigid if/else, missing discriminating cues |
-| Creative production | Quality goals; audience; assets and examples; room for alternatives | Over-proceduralization |
+| Shape | Prefer when | Default body organization | Main risk |
+| --- | --- | --- | --- |
+| Procedure or workflow | Operations depend on earlier results, and their order affects correctness | Inputs and preconditions; ordered steps with checkpoints; exceptions, recovery, and stop conditions | Skipped steps, unclear recovery |
+| Knowledge | The hard part is selecting and applying specialist knowledge, and requests need different subsets | Task-to-knowledge selection; application guidance and worked examples; scope checks and freshness checks for volatile facts | Source dump, stale facts |
+| Tool or interface | Correctness depends on exact inputs, invocation, and distinguishing success from failure | Operation selection; per-operation input and invocation contracts; results, error boundaries, and harness checks | Silent failure, assumed portability |
+| Judgment or review | Evidence and context must be weighed against criteria, and several conclusions may be defensible | Object and evidence to assess; criteria and discriminating cues; trade-offs and contrasting examples; conclusion with supporting evidence | Rigid if/else, missing discriminating cues |
+| Creative production | Goals, audience, and quality constraints guide the work, while the approach can vary | Goals, audience, and constraints; optional strategies and examples; production and quality review | Over-proceduralization |
+
+The table gives content relationships, not required headings or numbered steps. For a tool skill, organize independent operations by task; use a workflow when the operations must run in order. Choose supporting files by the lookup, automation, or reuse need in [Runtime structure](#runtime-structure), not by the shape label. Keep the main path in the body and load branch-specific knowledge, such as exact API details, through routed references.
+
+### Combine shapes within the task
+
+Use the structure and constraint strength appropriate to each part of the task; see [instruction-craft.md](instruction-craft.md#match-constraint-strength-to-the-behavior). When several common entry tasks exist, organize by task first, then use steps, criteria, or operation contracts within each task. After combining, remove duplicate instructions, conflicting defaults, and unnecessary steps.
+
+For example, a presentation skill can organize around the audience and message, content and visual choices, production, and review. Layout selection uses goals, discriminating cues, and contrasting examples. Rendering uses exact commands, success checks, and error handling. Keep the rendering contract scoped to that operation; it does not require a fixed layout or one creative method.
+
+### Choose validation from the risk
+
+Select a representative task that can expose the main risk. For example, check whether:
+
+- A workflow recovers correctly after an interrupted step;
+- Knowledge is found and applied within its scope;
+- A tool failure is detected;
+- A judgment responds to a material change in evidence;
+- Creative output meets the constraints while fitting the task.
+
+For a hybrid, also check the hand-off between its parts. Judge the artifact and execution trace, not whether the agent names a shape. These are validation choices, not a required case quota; use [iteration-and-evaluation.md](iteration-and-evaluation.md) to scale the check.
 
 Routing is a mechanism available to any shape. A standalone routing skill also needs a default path, a fallback, and tests for neighboring requests.
 
@@ -100,7 +120,7 @@ Add only the optional blocks that change a decision, action, or verification:
 - an operating contract for complex or tool skills: primary output, tools, failure tolerance;
 - assets or scripts usage.
 
-Match the blocks to the shape in [Choose a starting shape](#choose-a-starting-shape). A procedure needs checkpoints and stop conditions; a knowledge skill needs selection criteria and freshness; a tool skill needs exact contracts and error boundaries; a judgment skill needs criteria, cues, and trade-offs; a creative skill needs goals, audience, constraints, and room for alternatives.
+Use the selection cues and body organization in [Choose a starting shape](#choose-a-starting-shape) to place these blocks where they affect the task.
 
 Do not put status, history, version, changelog, ownership, design rationale, source arguments, or iteration records in `SKILL.md`; keep them in `docs/` or repository metadata, and do not let a runtime file point to `docs/`. Do not add a "When to use" section; the description owns the trigger. Do not add README, CHANGELOG, or QUICK_REFERENCE files as runtime files inside a skill; repository metadata is separate. Do not write unverified harness mechanisms, absolute paths, other repositories, or local machine locations.
 
