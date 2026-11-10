@@ -45,7 +45,7 @@ Keep conditions short. A table with long topic descriptions is a catalog, not ro
 
 - Keep the routing block near the main path, not at the bottom.
 - Do not repeat the same route in several places. If a step needs a pointer, keep the full route in the routing block and add only a short pointer at the step.
-- Use relative paths. Keep knowledge references flat: `references/foo.md`, not `references/foo/bar.md`. Assets and scripts may use their own layout.
+- Use relative paths. Default to flat knowledge references: `references/foo.md`. Use a subdirectory such as `references/domains/<topic>.md` only when a flat file would not work, and route the exact path. Assets and scripts may use their own layout.
 - Give each reference file an opening `Read when ...` line that matches the route. Add `Do not read when ...` when the skip condition matters.
 
 ## Anti-patterns
@@ -83,6 +83,6 @@ Then check:
 - [ ] One routing block, near the main path.
 - [ ] Every route has a read-when, a file, and a skip-when when over-reading is a risk.
 - [ ] Routes use decisions or timing, not topics.
-- [ ] Knowledge references are flat and relative.
+- [ ] Knowledge references are flat unless a subdirectory is necessary, and every path is relative.
 - [ ] No duplicate, orphan, or always-read references.
 - [ ] Three-task routing test passes.

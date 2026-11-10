@@ -32,6 +32,7 @@ Help an agent create, refactor, and improve reusable Agent Skills, with emphasis
 - Structured artifacts get one schema: keep field names, types, and value domains in one machine-readable schema (for example, `schemas/`) only when code, tests, or a validator consume it; derive code and tests from it.
 - Structural contracts get one carrier: an exact output tree or file template lives in a dedicated file, chosen by contract type (`assets/` for bytes to copy, a reference for rules to apply, a validator when the rule must hold exactly), routed before the producing step, with no second copy.
 - Reference routing as a decision: every reference needs a read-when, plus a skip-when when over-reading is a risk; the default path should need no reference; a file index is not routing.
+- Reference layout: flat by default, one level from `SKILL.md`; a subdirectory such as `references/domains/` is allowed only when a flat file would not work. Reason: a flat list stops being scannable once knowledge splits by domain, while nesting raises the risk that a harness does not walk to that depth; one fixed depth cannot serve both. Rejected: requiring flat always, which forced domain collections into artificial flat names.
 
 ## Design record policy
 

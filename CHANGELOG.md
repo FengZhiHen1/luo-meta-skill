@@ -39,6 +39,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `instruction-craft.md` requires one authoritative statement per rule, cross-file duplicate removal, and a duplicate check in the precision list.
 - `skill-architecture.md` replaces "Specifications and design documents" with "Design record in docs/" and routes the record as a shipped, never-loaded component.
 - README, README.zh-CN, and the skill's own design record describe the new contract.
+- `skill-architecture.md` and `reference-routing.md` now default knowledge references to flat, one level from `SKILL.md`, and allow a subdirectory such as `references/domains/` only when a flat file would not work.
 
 ## [0.1.0] - 2026-10-19
 

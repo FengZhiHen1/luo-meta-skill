@@ -120,7 +120,7 @@ Start with one coherent `SKILL.md` and add components only when the work needs t
 
 Reference routing is a separate design problem. Use [reference-routing.md](reference-routing.md) to decide what to read, when, and when to skip it; a list of files is not routing.
 
-Keep knowledge references flat: `references/<name>.md`, so every file is one level from `SKILL.md`. Assets and scripts may use subdirectories. Do not build chains that hide essential guidance. A correct relative path does not prove that the harness can discover the reference. Check loading behavior in the real harness.
+Default to flat knowledge references: `references/<name>.md`, one level from `SKILL.md`. Use a subdirectory only when a flat file would not work, for example `references/domains/<topic>.md` for domain knowledge that is too large or too distinct for one file. Then route the exact relative path and confirm that the harness loads files at that depth. Assets and scripts may use subdirectories. Do not build chains that hide essential guidance. A correct relative path does not prove that the harness can discover the reference. Check loading behavior in the real harness.
 
 ### Directory and file-template contracts
 
